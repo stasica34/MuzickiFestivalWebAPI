@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="DataBaseAcces/DataBaseAcces.csproj" Id="138e76db-67d1-484f-a641-fdb82cdeb776" />
+  <Project Path="MuzickiFestivalWebAPI/MuzickiFestivalWebAPI.csproj" />
+</Solution>
