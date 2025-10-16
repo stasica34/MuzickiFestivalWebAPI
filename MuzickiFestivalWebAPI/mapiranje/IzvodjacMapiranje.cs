@@ -10,17 +10,18 @@ using System.Threading.Tasks;
 
 namespace Muzicki_festival.Mapiranje
 {
-    public class IzvodjacMapiranje:ClassMap<Muzicki_festival.Entiteti.Izvodjac>
+    public class IzvodjacMapiranje : ClassMap<Muzicki_festival.Entiteti.Izvodjac>
     {
         public IzvodjacMapiranje()
         {
             Table("IZVODJAC");
-            Id(x => x.ID, "ID").GeneratedBy.Identity();
+            Schema("S19184");
+            Id(x => x.ID, "ID").GeneratedBy.SequenceIdentity("IZVODJAC_PK");
             Map(x => x.IME, "IME").Not.Nullable();
             Map(x => x.DRZAVA_POREKLA, "DRZAVA_POREKLA").Not.Nullable();
             Map(x => x.EMAIL, "EMAIL").Not.Nullable();
             Map(x => x.KONTAKT_OSOBA, "KONTAKT_OSOBA").Nullable();
-            Map(x => x.TIP_IZVODJACA, "TIP_IZVODJACA").CustomType<EnumStringType<IzvodjacTip>>().Not.Nullable();
+            Map(x => x.TIP_IZVODJACA, "TIP_IZVODJACA").CustomType<EnumStringType<TipIzvodjaca>>().Not.Nullable();
             //mapiranje 1:n sa menadzerskom agencijom
             References(x => x.MenadzerskaAgencija).Column("MENADZERSKA_AGENCIJA_ID").LazyLoad().Cascade.None();
             //mapiranje n:m
@@ -29,6 +30,7 @@ namespace Muzicki_festival.Mapiranje
               .ParentKeyColumn("IZVODJAC_ID")
               .ChildKeyColumn("DOGADJAJ_ID")
               .Cascade.All();
+
             //svuda gde mi je nasladjivanje da uradim i sa discriminator sa tipom
             //visevrednosni atribut
             Map(x => x.TELEFON, "TELEFON");
@@ -39,7 +41,6 @@ namespace Muzicki_festival.Mapiranje
                .KeyColumn(("IZVODJAC_ID"))
                .Element("ZAHTEV")
                .Cascade.All();
-
         }
 
         public class SoloUmetnikMapiranje : SubclassMap<Muzicki_festival.Entiteti.Solo_Umetnik>

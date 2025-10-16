@@ -3,28 +3,28 @@ using System.Collections.Generic;
 
 namespace Muzicki_festival.Entiteti
 {
-    public enum IzvodjacTip
+    public enum TipIzvodjaca
     {
-        SOLO_UMETNIK,
-        BEND
+        SOLO_UMETNIK ,
+        BEND 
     }
 
     public class Izvodjac
     {
-        public virtual int ID { get; protected set; }
-        public virtual string? IME { get; set; }
-        public virtual string? DRZAVA_POREKLA { get; set; }
+        public virtual int ID { get; set; }
+        public virtual string IME { get; set; }
+        public virtual string DRZAVA_POREKLA { get; set; }
 
-        public virtual string? EMAIL { get; set; }
+        public virtual string EMAIL { get; set; }
 
-        public virtual string? KONTAKT_OSOBA { get; set; }
+        public virtual string KONTAKT_OSOBA { get; set; }
 
-        public virtual IzvodjacTip TIP_IZVODJACA { get; set; }
+        public virtual TipIzvodjaca TIP_IZVODJACA { get; set; }
 
-        public virtual string? TELEFON { get; set; }
-        public virtual string? Zanr { get; set; }
+        public virtual string TELEFON { get; set; }
+        public virtual string Zanr { get; set; }
         public virtual IList<string> Lista_tehnickih_zahteva { get; set; }
-        public virtual MenadzerskaAgencija? MenadzerskaAgencija { get; set; }
+        public virtual MenadzerskaAgencija MenadzerskaAgencija { get; set; }
         //veza n:m sa dogadjem
         public virtual IList<Dogadjaj> Dogadjaji { get; set; }
 
@@ -53,8 +53,8 @@ namespace Muzicki_festival.Entiteti
     }
     public class Solo_Umetnik : Izvodjac
     {
-        public virtual string? SVIRA_INSTRUMENT { get; set; }
-        public virtual string? TIP_INSTRUMENTA { get; set; }
+        public virtual string SVIRA_INSTRUMENT { get; set; }
+        public virtual string TIP_INSTRUMENTA { get; set; }
         public virtual IList<string> VOKALNE_SPOSOBNOSTI { get; set; } //visevrednostni atribut
         public Solo_Umetnik()
         {

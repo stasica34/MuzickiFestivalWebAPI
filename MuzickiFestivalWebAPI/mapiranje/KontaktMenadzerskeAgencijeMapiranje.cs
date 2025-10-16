@@ -13,8 +13,8 @@ namespace Muzicki_festival.Mapiranje
     {
         public KontaktMenadzerskeAgencijeMapiranje()
         {
-            Table("KONTAKT_PODACI_MENADZERSKE_AGENCIJE");
-            Id(x => x.ID, "ID").GeneratedBy.Identity();
+            Table("KONTAKT_PODACI_MENADZERSKE");
+            Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
             Map(x => x.TIP_KONTAKTA, "TIP_KONTAKTA").CustomType<EnumStringType<TipKontakta>>().Not.Nullable();
             Map(x => x.VREDNOST, "VREDNOST").Not.Nullable();
             References(x => x.MENADZERSKA_AGENCIJA).Column("MENADZERSKA_AGENCIJA_ID").LazyLoad().Cascade.None();

@@ -29,12 +29,12 @@ namespace Muzicki_festival
                 {
                     switch (i.TIP_IZVODJACA)
                     {
-                        case IzvodjacTip.SOLO_UMETNIK:
+                        case TipIzvodjaca.SOLO_UMETNIK:
                             Solo_Umetnik u = i as Solo_Umetnik;
                             izvodjaciView.Add(new Solo_umetnikView(u.ID, u.IME, i.DRZAVA_POREKLA, u.EMAIL, u.KONTAKT_OSOBA, u.TELEFON, u.Zanr, u.SVIRA_INSTRUMENT, u.TIP_INSTRUMENTA));
                             break;
 
-                        case IzvodjacTip.BEND:
+                        case TipIzvodjaca.BEND:
                             Bend b = i as Bend;
                             izvodjaciView.Add(new BendView(b.ID, b.IME, b.DRZAVA_POREKLA, b.EMAIL, b.KONTAKT_OSOBA, b.TELEFON, b.Zanr, b.BROJ_CLANOVA));
                             break;
@@ -63,11 +63,11 @@ namespace Muzicki_festival
                 {
                     switch (i.TIP_IZVODJACA)
                     {
-                        case IzvodjacTip.SOLO_UMETNIK:
+                        case TipIzvodjaca.SOLO_UMETNIK:
                             Solo_Umetnik u = i as Solo_Umetnik;
                             iv = new Solo_umetnikView(u.ID, u.IME, i.DRZAVA_POREKLA, u.EMAIL, u.KONTAKT_OSOBA, u.TELEFON, u.Zanr, u.SVIRA_INSTRUMENT, u.TIP_INSTRUMENTA);
                             break;
-                        case IzvodjacTip.BEND:
+                        case TipIzvodjaca.BEND:
                             Bend b = i as Bend;
                             iv = new BendView(b.ID, b.IME, b.DRZAVA_POREKLA, b.EMAIL, b.KONTAKT_OSOBA, b.TELEFON, b.Zanr, b.BROJ_CLANOVA);
                             break;
@@ -95,16 +95,16 @@ namespace Muzicki_festival
                     return null;
 
                 int id;
-                switch (i.TipIzvodajac)
+                switch (i.TipIzvodjaca)
                 {
-                    case IzvodjacTip.SOLO_UMETNIK:
+                    case TipIzvodjaca.SOLO_UMETNIK:
                         Solo_Umetnik novi = new Solo_Umetnik
                         {
                             IME = i.Ime,
                             DRZAVA_POREKLA = i.Drzava_porekla,
                             EMAIL = i.Email,
                             TELEFON = i.Telefon,
-                            TIP_IZVODJACA = i.TipIzvodajac,
+                            TIP_IZVODJACA = i.TipIzvodjaca,
                             Zanr = i.Zanr,
                             KONTAKT_OSOBA = i.Kontakt_osoba,
                             SVIRA_INSTRUMENT = (i as Solo_UmetnikBasic).Svira_instrument,
@@ -130,14 +130,14 @@ namespace Muzicki_festival
                         s.Close();
 
                         return new Solo_umetnikView(id, novi.IME, novi.DRZAVA_POREKLA, novi.EMAIL, novi.KONTAKT_OSOBA, novi.TELEFON, novi.Zanr, novi.SVIRA_INSTRUMENT, novi.TIP_INSTRUMENTA);
-                    case IzvodjacTip.BEND:
+                    case TipIzvodjaca.BEND:
                         Bend bend = new Bend
                         {
                             IME = i.Ime,
                             DRZAVA_POREKLA = i.Drzava_porekla,
                             EMAIL = i.Email,
                             TELEFON = i.Telefon,
-                            TIP_IZVODJACA = i.TipIzvodajac,
+                            TIP_IZVODJACA = i.TipIzvodjaca,
                             KONTAKT_OSOBA = i.Kontakt_osoba,
                             BROJ_CLANOVA = 0,
                             Zanr = i.Zanr,
@@ -316,7 +316,7 @@ namespace Muzicki_festival
 
                 switch (izv.TIP_IZVODJACA)
                 {
-                    case IzvodjacTip.BEND:
+                    case TipIzvodjaca.BEND:
                         Bend b = izv as Bend;
                         BendBasic basic = i as BendBasic;
 
@@ -331,7 +331,7 @@ namespace Muzicki_festival
                         s.Close();
 
                         return true;
-                    case IzvodjacTip.SOLO_UMETNIK:
+                    case TipIzvodjaca.SOLO_UMETNIK:
                         Solo_Umetnik su = izv as Solo_Umetnik;
                         Solo_UmetnikBasic sbasic = i as Solo_UmetnikBasic;
 
@@ -541,15 +541,15 @@ namespace Muzicki_festival
                     {
                         case TipLokacije.OTVORENA:
                             OtvorenaLokacija o = l as OtvorenaLokacija;
-                            lokacijeView.Add(new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET ?? 0));
+                            lokacijeView.Add(new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET));
                             break;
                         case TipLokacije.ZATVORENA:
                             ZatvorenaLokacija z = l as ZatvorenaLokacija;
-                            lokacijeView.Add(new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET ?? 0, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA));
+                            lokacijeView.Add(new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA));
                             break;
                         case TipLokacije.KOMBINOVANA:
                             KombinovanaLokacija k = l as KombinovanaLokacija;
-                            lokacijeView.Add(new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET ?? 0, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA));
+                            lokacijeView.Add(new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA));
                             break;
                     }
                 }
@@ -584,7 +584,7 @@ namespace Muzicki_festival
                         };
 
                         id = (int)s.Save(o);
-                        ret = new OtvorenaLokacijaView(id, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET ?? 0);
+                        ret = new OtvorenaLokacijaView(id, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET);
                         break;
                     case TipLokacije.ZATVORENA:
                         ZatvorenaLokacija z = new ZatvorenaLokacija()
@@ -600,7 +600,7 @@ namespace Muzicki_festival
                         };
 
                         id = (int)s.Save(z);
-                        ret = new ZatvorenaLokacijaView(id, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET ?? 0, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
+                        ret = new ZatvorenaLokacijaView(id, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
                         break;
                     case TipLokacije.KOMBINOVANA:
                         KombinovanaLokacija k = new KombinovanaLokacija()
@@ -616,7 +616,7 @@ namespace Muzicki_festival
                         };
 
                         id = (int)s.Save(k);
-                        ret = new KombinovanaLokacijaView(id, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET ?? 0, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
+                        ret = new KombinovanaLokacijaView(id, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
                         break;
                 }
 
@@ -646,15 +646,15 @@ namespace Muzicki_festival
                     {
                         case TipLokacije.OTVORENA:
                             OtvorenaLokacija o = l as OtvorenaLokacija;
-                            lv = new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET ?? 0);
+                            lv = new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET);
                             break;
                         case TipLokacije.ZATVORENA:
                             ZatvorenaLokacija z = l as ZatvorenaLokacija;
-                            lv = new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET ?? 0, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
+                            lv = new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
                             break;
                         case TipLokacije.KOMBINOVANA:
                             KombinovanaLokacija k = l as KombinovanaLokacija;
-                            lv = new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET ?? 0, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
+                            lv = new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
                             break;
                     }
                 }
@@ -726,6 +726,28 @@ namespace Muzicki_festival
             }
         }
 
+        public static bool ObrisiLokaciju(int idLokacije)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Lokacija l = s.Get<Lokacija>(idLokacije);
+
+                if (l == null)
+                    return false;
+
+                s.Delete(l);
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
         #endregion
 
         #region DostupnaOprema
@@ -786,7 +808,7 @@ namespace Muzicki_festival
             }
         }
 
-        public static bool ObrisiDostupnuOpremu(DostupnaOpremaBasic o)
+        public static bool ObrisiDostupnuOpremu(int dostupnaid)
         {
             try
             {
@@ -794,21 +816,22 @@ namespace Muzicki_festival
 
                 using (var transaction = s.BeginTransaction())
                 {
-                    Lokacija l = s.Get<Lokacija>(o.Lokacija.Id);
-                    if (l == null)
+                    DostupnaOprema oprema = s.Get<DostupnaOprema>(dostupnaid);
+                    if (oprema == null)
                         return false;
 
-                    DostupnaOprema oprema = s.Get<DostupnaOprema>(o.Id);
+                    Lokacija l = oprema.Lokacija;
+                    if (l != null)
+                    {
+                        l.DOSTUPNA_OPREMA.Remove(oprema);
+                        s.SaveOrUpdate(l);
+                    }
 
-                    if (oprema == null || oprema.Lokacija.ID != l.ID)
-                        return false;
-
-                    bool ret = l.DOSTUPNA_OPREMA.Remove(oprema);
                     s.Delete(oprema);
                     s.SaveOrUpdate(l);
                     transaction.Commit();
 
-                    return ret;
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -966,11 +989,11 @@ namespace Muzicki_festival
                     {
                         switch (i.TIP_IZVODJACA)
                         {
-                            case IzvodjacTip.SOLO_UMETNIK:
+                            case TipIzvodjaca.SOLO_UMETNIK:
                                 Solo_Umetnik u = i as Solo_Umetnik;
                                 izvodjaciView.Add(new Solo_umetnikView(u.ID, u.IME, i.DRZAVA_POREKLA, u.EMAIL, u.KONTAKT_OSOBA, u.TELEFON, u.Zanr, u.SVIRA_INSTRUMENT, u.TIP_INSTRUMENTA));
                                 break;
-                            case IzvodjacTip.BEND:
+                            case TipIzvodjaca.BEND:
                                 Bend b = i as Bend;
                                 izvodjaciView.Add(new BendView(b.ID, b.IME, b.DRZAVA_POREKLA, b.EMAIL, b.KONTAKT_OSOBA, b.TELEFON, b.Zanr, b.BROJ_CLANOVA));
                                 break;
@@ -1100,33 +1123,34 @@ namespace Muzicki_festival
         {
             try
             {
-                ISession s = DataLayer.GetSession();
-                Lokacija l = s.Get<Lokacija>(db.Lokacija.Id);
-
-                if (l == null)
+                using (ISession s = DataLayer.GetSession())
+                using (ITransaction tx = s.BeginTransaction())
                 {
-                    throw new Exception("Nepostojeca lokacija!");
+                    Lokacija l = s.Get<Lokacija>(db.Lokacija.Id);
+
+                    if (l == null)
+                    {
+                        throw new Exception("Nepostojeca lokacija!");
+                    }
+
+                    Dogadjaj d = new Dogadjaj
+                    {
+                        NAZIV = db.Naziv,
+                        OPIS = db.Opis,
+                        DATUM_VREME_POCETKA = db.DatumPocetka,
+                        DATUM_VREME_KRAJA = db.DatumKraja,
+                        TIP = db.Tip,
+                        Lokacija = l
+                    };
+
+                    int id = (int)s.Save(d);
+                    tx.Commit(); 
+                    return new DogadjajView(id, db.Naziv, db.Tip, db.Opis, db.DatumPocetka, db.DatumKraja, db.Lokacija.Naziv);
                 }
-
-                Dogadjaj d = new Dogadjaj
-                {
-                    NAZIV = db.Naziv,
-                    OPIS = db.Opis,
-                    DATUM_VREME_POCETKA = db.DatumPocetka,
-                    DATUM_VREME_KRAJA = db.DatumKraja,
-                    TIP = db.Tip,
-                    Lokacija = l
-                };
-
-                int id = (int)s.Save(d);
-                s.Flush();
-                s.Close();
-
-                return new DogadjajView(id, db.Naziv, db.Tip, db.Opis, db.DatumPocetka, db.DatumKraja, db.Lokacija.Naziv);
             }
             catch (Exception e)
             {
-               Console.WriteLine(e.Message);
+                Console.WriteLine("GREŠKA: " + e.ToString());
                 return null;
             }
         }
@@ -1175,11 +1199,11 @@ namespace Muzicki_festival
                 {
                     switch (i.TIP_IZVODJACA)
                     {
-                        case IzvodjacTip.SOLO_UMETNIK:
+                        case TipIzvodjaca.SOLO_UMETNIK:
                             var u = i as Solo_Umetnik;
                             izvodjacViews.Add(new Solo_umetnikView(u.ID, u.IME, u.DRZAVA_POREKLA, u.EMAIL, u.KONTAKT_OSOBA, u.TELEFON, u.Zanr, u.SVIRA_INSTRUMENT, u.TIP_INSTRUMENTA));
                             break;
-                        case IzvodjacTip.BEND:
+                        case TipIzvodjaca.BEND:
                             var b = i as Bend;
                             izvodjacViews.Add(new BendView(b.ID, b.IME, b.DRZAVA_POREKLA, b.EMAIL, b.KONTAKT_OSOBA, b.TELEFON, b.Zanr, b.BROJ_CLANOVA));
                             break;
@@ -1233,7 +1257,28 @@ namespace Muzicki_festival
         #endregion
 
         #region Posetilac
+        public static IList<PosetilacView> VratiSvePosetioce()
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                IList<Posetilac> lista = s.Query<Posetilac>().ToList();
 
+                List<PosetilacView> views = new List<PosetilacView>();
+                foreach (Posetilac poset in lista)
+                {
+                    views.Add(new PosetilacView(poset.ID, poset.IME, poset.PREZIME, poset.EMAIL, poset.Telefon));
+                }
+
+                return views;
+                ;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return new List<PosetilacView>();
+            }
+        }
         public static PosetilacView DodajPosetioca(PosetilacBasic pb)
         {
             try
@@ -1247,7 +1292,7 @@ namespace Muzicki_festival
                 }
 
                 Ulaznica u;
-                switch (pb.Ulaznica.TipUlaznice)
+                switch (pb.Ulaznica.Tip)
                 {
                     case TipUlaznice.JEDNODNEVNA:
                         u = new Jednodnevna
@@ -1317,11 +1362,576 @@ namespace Muzicki_festival
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+        public static PosetilacView IzmeniPosetioca(PosetilacBasic pb)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Posetilac p = s.Get<Posetilac>(pb.Id);
+
+                if (p == null)
+                    return null;
+
+                p.IME = pb.Ime;
+                p.PREZIME = pb.Prezime;
+                p.EMAIL = pb.Email;
+                p.Telefon = pb.Telefon;
+
+                s.Update(p);
+                s.Flush();
+                s.Close();
+
+                return new PosetilacView(p.ID, p.IME, p.PREZIME, p.EMAIL, p.Telefon);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+        public static bool ObrisiPosetioca(int idPosetioca)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Posetilac p = s.Get<Posetilac>(idPosetioca);
+
+                if (p == null)
+                    return false;
+
+                s.Delete(p);
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+        public static UlaznicaBasic VratiUlaznicuPosetioca(int idPosetioca)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Ulaznica u = s.Query<Ulaznica>().Where(ul => ul.KUPAC_ID.ID == idPosetioca).FirstOrDefault();
+
+                if (u == null)
+                    return null;
+
+                UlaznicaBasic ret = null;
+                switch (u.TIP_ULAZNICE)
+                {
+                    case TipUlaznice.JEDNODNEVNA:
+                        ret = new JednodnevnaBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Jednodnevna).DAN_VAZENJA);
+                        break;
+
+                    case TipUlaznice.VISEDNEVNA:
+                        ret = new ViseDnevnaBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Visednevna).Dani);
+                        break;
+
+                    case TipUlaznice.VIP:
+                        ret = new VIPBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Vip).Pogodnosti);
+                        break;
+
+                    case TipUlaznice.AKREDITACIJA:
+                        ret = new AkreditacijaBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Akreditacija).TIP);
+                        break;
+                }
+
+                return ret;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+        public static GrupaView VratiGrupuPosetioca(int idPosetioca)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Posetilac p = s.Get<Posetilac>(idPosetioca);
+
+                if (p == null)
+                    return null;
+
+                if (p.GRUPA == null)
+                    return null;
+
+                Grupa g = p.GRUPA;
+
+                List<string> imena = new List<string>();
+                foreach (var c in g.Clanovi)
+                {
+                    imena.Add(c.IME);
+                }
+
+                GrupaView gb = new GrupaView(g.ID_GRUPE, g.NAZIV, g.AgencijaID.NAZIV, imena);
+
+                return gb;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+        public static bool IzbaciIzGrupe(int idPosetioca, int idGrupe)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Posetilac p = s.Get<Posetilac>(idPosetioca);
+                Grupa g = s.Get<Grupa>(idGrupe);
+
+                if (p == null || g == null)
+                    return false;
+
+                if (p.GRUPA.ID_GRUPE != g.ID_GRUPE)
+                    return false;
+
+                g.Clanovi.Remove(p);
+                p.GRUPA = null;
+
+                s.Update(g);
+                s.Update(p);
+
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region AgencijaOrganizator
+
+        public static IList<AgencijaOrganizatorView> VratiSveAgencije()
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                IList<AgencijaOrganizator> agencije = s.Query<AgencijaOrganizator>().ToList();
+
+                List<AgencijaOrganizatorView> views = new List<AgencijaOrganizatorView>();
+
+                foreach (var a in agencije)
+                {
+                    views.Add(new AgencijaOrganizatorView(a.ID, a.NAZIV, a.ADRESA));
+                    ;
+                }
+
+                return views;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return new List<AgencijaOrganizatorView>();
+            }
+        }
+
+        public static AgencijaOrganizatorView DodajAgenciju(AgencijaOrganizatorBasic ab)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                AgencijaOrganizator nova = new AgencijaOrganizator
+                {
+                    NAZIV = ab.Naziv,
+                    ADRESA = ab.Adresa
+                };
+
+                int Id = (int)s.Save(nova);
+
+                s.Flush();
+                s.Close();
+
+                return new AgencijaOrganizatorView(nova.ID, nova.NAZIV, nova.ADRESA);
+            }
+            catch (Exception e)
+            {
                Console.WriteLine(e.Message);
                 return null;
             }
         }
 
+        public static bool ObrisiAgenciju(int agencijaId)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                AgencijaOrganizator a = s.Get<AgencijaOrganizator>(agencijaId);
+
+                if (a == null)
+                {
+                    return false;
+                }
+
+                s.Delete(a);
+                s.Flush();
+                s.Close();
+
+                return true;
+
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public static bool IzmeniAgencijuOrganizator(AgencijaOrganizatorBasic ab)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                AgencijaOrganizator a = s.Get<AgencijaOrganizator>(ab.Id);
+
+                if (a == null)
+                    return false;
+
+                a.NAZIV = ab.Naziv;
+                a.ADRESA = ab.Adresa;
+
+                s.Update(a);
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Grupa
+
+        public static IList<GrupaView> VratiSveGrupe()
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                IList<Grupa> grupe = s.Query<Grupa>().ToList();
+
+                List<GrupaView> views = new List<GrupaView>();
+                foreach (var g in grupe)
+                {
+                    List<string> imena = new List<string>();
+                    foreach (var p in g.Clanovi)
+                    {
+                        imena.Add(p.IME);
+                    }
+
+                    views.Add(new GrupaView(g.ID_GRUPE, g.NAZIV, g.AgencijaID.NAZIV, imena));
+                }
+
+                return views;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return new List<GrupaView>();
+            }
+        }
+
+        public static GrupaView DodajGrupu(GrupaBasic gb)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                AgencijaOrganizator ag = s.Get<AgencijaOrganizator>(gb.Agencija.Id);
+
+                if (ag == null)
+                {
+                    return null;
+                }
+
+                Grupa nova = new Grupa
+                {
+                    NAZIV = gb.Naziv,
+                    AgencijaID = ag
+                };
+
+                ag.Grupe.Add(nova);
+
+                s.Update(ag);
+                s.Flush();
+                s.Close();
+
+                return new GrupaView(nova.ID_GRUPE, nova.NAZIV, nova.AgencijaID.NAZIV, new List<string>());
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public static bool DodajClanaGrupi(int grupaId, int posetilacID)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Grupa g = s.Get<Grupa>(grupaId);
+                Posetilac p = s.Get<Posetilac>(posetilacID);
+
+                if (g == null || p == null)
+                {
+                    return false;
+                }
+
+                if (g.Clanovi.Contains(p))
+                    return true;
+
+                g.Clanovi.Add(p);
+                s.Update(g);
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public static bool IzmeniGrupu(GrupaBasic gb)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Grupa g = s.Get<Grupa>(gb.Id);
+
+                if (g == null)
+                    return false;
+
+                g.NAZIV = gb.Naziv;
+
+                if (gb.Agencija != null && (g.AgencijaID.ID != gb.Agencija.Id))
+                {
+                    AgencijaOrganizator ag = s.Get<AgencijaOrganizator>(g.AgencijaID.ID);
+                    ag.Grupe.Remove(g);
+                    s.Update(ag);
+                    s.Flush();
+
+                    AgencijaOrganizator nova = s.Get<AgencijaOrganizator>(gb.Agencija.Id);
+                    if (nova == null)
+                    {
+                        s.Close();
+                        return false;
+                    }
+
+                    nova.Grupe.Add(g);
+                    g.AgencijaID = nova;
+
+                    s.Update(nova);
+                    s.Flush();
+                }
+
+                s.Update(g);
+                s.Flush();
+
+                s.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public static bool ObrisiGrupu(int grupaId)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Grupa g = s.Get<Grupa>(grupaId);
+                if (g == null)
+                    return false;
+
+                s.Delete(g);
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+
+        #endregion
+
+        #region Ulaznice
+        public static IList<UlaznicaBasic> VratiSveUlaznice()
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                IList<Ulaznica> ulaznice = s.Query<Ulaznica>().ToList();
+
+                IList<UlaznicaBasic> basics = new List<UlaznicaBasic>();
+
+                foreach (var u in ulaznice)
+                {
+                    switch (u.TIP_ULAZNICE)
+                    {
+                        case TipUlaznice.JEDNODNEVNA:
+                            basics.Add(new JednodnevnaBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Jednodnevna).DAN_VAZENJA));
+                            break;
+                        case TipUlaznice.VISEDNEVNA:
+                            basics.Add(new ViseDnevnaBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Visednevna).Dani.ToList()));
+                            break;
+                        case TipUlaznice.VIP:
+                            basics.Add(new VIPBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Vip).Pogodnosti.ToList()));
+                            break;
+                        case TipUlaznice.AKREDITACIJA:
+                            basics.Add(new AkreditacijaBasic(u.ID_ULAZNICE, u.OSNOVNA_CENA, u.NACIN_PLACANJA, u.DATUM_KUPOVINE, null, (u as Akreditacija).TIP));
+                            break;
+                        default:
+                            throw new Exception("Nepravilna ulaznica!");
+                    }
+                }
+
+                return basics;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return new List<UlaznicaBasic>();
+            }
+        }
+
+        public static bool IzmeniUlaznicu(UlaznicaBasic ub)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Ulaznica u = s.Get<Ulaznica>(ub.Id);
+
+                if (u == null)
+                {
+                    return false;
+                }
+
+                switch (u.TIP_ULAZNICE)
+                {
+                    case TipUlaznice.JEDNODNEVNA:
+                        Jednodnevna j = u as Jednodnevna;
+                        var jb = ub as JednodnevnaBasic;
+                        if (j == null || jb == null)
+                            throw new Exception("Nevalidan tip objekta za JEDNODNEVNA ulaznicu.");
+                        j.OSNOVNA_CENA = jb.OsnovnaCena;
+                        j.NACIN_PLACANJA = jb.NacinPlacanja;
+                        j.DATUM_KUPOVINE = jb.DatumKupovine;
+                        j.DAN_VAZENJA = (jb as JednodnevnaBasic).DatumVazenja;
+
+                        s.Update(j);
+                        break;
+                    case TipUlaznice.VISEDNEVNA:
+                        Visednevna v = u as Visednevna;
+                        var vb = ub as ViseDnevnaBasic;
+                        if (v == null || vb == null)
+                            throw new Exception("Nevalidan tip objekta za VISEDNEVNA ulaznicu.");
+                        v.OSNOVNA_CENA = vb.OsnovnaCena;
+                        v.NACIN_PLACANJA = vb.NacinPlacanja;
+                        v.DATUM_KUPOVINE = vb.DatumKupovine;
+                        v.Dani = (vb as ViseDnevnaBasic).DatumiVazenja.ToList();
+
+                        s.Update(v);
+                        break;
+                    case TipUlaznice.VIP:
+                        Vip vi = u as Vip;
+                        var vib = ub as VIPBasic;
+                        if (vi == null || vib == null)
+                            throw new Exception("Nevalidan tip objekta za VIP ulaznicu.");
+                        vi.OSNOVNA_CENA = vib.OsnovnaCena;
+                        vi.NACIN_PLACANJA = vib.NacinPlacanja;
+                        vi.DATUM_KUPOVINE = vib.DatumKupovine;
+                        vi.Pogodnosti = (vib as VIPBasic).Pogodnosti.ToList();
+
+                        s.Update(vi);
+                        break;
+                    case TipUlaznice.AKREDITACIJA:
+                        Akreditacija a = u as Akreditacija;
+                        var ab = ub as AkreditacijaBasic;
+                        if (a == null || ab == null)
+                            throw new Exception("Nevalidan tip objekta za AKREDITACIJA ulaznicu.");
+                        a.OSNOVNA_CENA = ab.OsnovnaCena;
+                        a.NACIN_PLACANJA = ab.NacinPlacanja;
+                        a.DATUM_KUPOVINE = ab.DatumKupovine;
+                        a.TIP = (ab as AkreditacijaBasic).Tip;
+
+                        s.Update(a);
+                        break;
+                    default:
+                        throw new Exception("Nepravilna ulaznica!");
+                }
+
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public static bool ObrisiUlaznicu(int ulaznicaID)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Ulaznica u = s.Get<Ulaznica>(ulaznicaID);
+
+                if (u == null)
+                {
+                    return false;
+                }
+
+                s.Delete(u);
+                s.Flush();
+                s.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine(e.Message);
+                return false;
+            }
+        }
 
         #endregion
     }

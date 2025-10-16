@@ -9,8 +9,8 @@ namespace Muzicki_festival.Entiteti
     public class AgencijaOrganizator
     {
         public virtual int ID { get; protected set; }
-        public virtual string? NAZIV { get; set; }
-        public virtual string? ADRESA { get; set; }
+        public virtual string NAZIV { get; set; }
+        public virtual string ADRESA { get; set; }
 
         //1:n veza sa grupama
         public virtual IList<Grupa> Grupe { get; set; }

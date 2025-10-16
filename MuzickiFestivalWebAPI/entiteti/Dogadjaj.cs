@@ -8,23 +8,14 @@ namespace Muzicki_festival.Entiteti
 {
     public class Dogadjaj
     {
-        //jednostavni property
         public virtual int ID { get; protected set; }
-        //protected je da ne dozvoljavamo da se ID dodaje programski, jer je za generisanje ID  koristi baza
-        public virtual string? NAZIV { get; set; }
-        public virtual string? TIP { get; set; }
-        public virtual string? OPIS { get; set; }
+        public virtual string NAZIV { get; set; }
+        public virtual string TIP { get; set; }
+        public virtual string OPIS { get; set; }
         public virtual DateTime DATUM_VREME_POCETKA { get; set; }
         public virtual DateTime DATUM_VREME_KRAJA { get; set; }
-
-        //virtual properti - mogu da se overriduju, mora da budu virtual zbog mapiranja
-        //konstructor
-        //veza 1:n ka lokaciji
-        public virtual Lokacija? Lokacija { get; set; }
-
-        //veza n:m sa izvodjacem
+        public virtual Lokacija Lokacija { get; set; }
         public virtual IList<Izvodjac> Izvodjaci { get; set; }
-        //vwza n:m sa ulaznicom
         public virtual IList<Ulaznica> Ulaznica { get; set; }
         public Dogadjaj()
         {

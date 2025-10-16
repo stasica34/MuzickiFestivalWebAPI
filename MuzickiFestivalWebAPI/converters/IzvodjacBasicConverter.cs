@@ -4,12 +4,6 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-public enum TipIzvodjaca
-{
-    SOLO = 0,
-    BEND = 1
-}
-
 public class IzvodjacBasicConverter : JsonConverter<IzvodjacBasic>
 {
     public override IzvodjacBasic? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -21,12 +15,16 @@ public class IzvodjacBasicConverter : JsonConverter<IzvodjacBasic>
             if (!root.TryGetProperty("tipIzvodjaca", out JsonElement tipElement))
                 throw new JsonException("Polje 'tipIzvodjaca' je obavezno.");
 
-            TipIzvodjaca tip = (TipIzvodjaca)tipElement.GetInt32();
+            string tipString = tipElement.GetString() ?? throw new JsonException("tipIzvodjaca ne može biti null.");
+
+            if (!Enum.TryParse<TipIzvodjaca>(tipString, true, out var tip))
+                throw new JsonException($"Nepoznat tip izvodjaca: {tipString}");
+
             string json = root.GetRawText();
 
             return tip switch
             {
-                TipIzvodjaca.SOLO => JsonSerializer.Deserialize<Solo_UmetnikBasic>(json, options),
+                TipIzvodjaca.SOLO_UMETNIK => JsonSerializer.Deserialize<Solo_UmetnikBasic>(json, options),
                 TipIzvodjaca.BEND => JsonSerializer.Deserialize<BendBasic>(json, options),
                 _ => throw new JsonException("Nepoznat tip izvođača.")
             };

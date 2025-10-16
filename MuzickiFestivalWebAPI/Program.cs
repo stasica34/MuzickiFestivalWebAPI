@@ -23,6 +23,18 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new IzvodjacBasicConverter());
     });
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new UlaznicaBasicConverter());
+    });
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

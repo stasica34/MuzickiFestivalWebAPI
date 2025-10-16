@@ -1,50 +1,21 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Muzicki_festival;
 using Muzicki_festival.DTOs;
-using Muzicki_festival.Entiteti;
 
 namespace MuzickiFestivalWebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DogadjajController : ControllerBase
+    public class GrupaController : ControllerBase
     {
         [HttpGet]
-        [Route("PreuzmiDogadjaje")]
+        [Route("PreuzmiGrupe")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PreuzmiDogadjaje()
+        public IActionResult VratiSveGrupe()
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveDogadjaje());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message.ToString());
-            }
-        }
-        [HttpGet]
-        [Route("PreuzmiDogadjajePoID")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PreuzmiDogadjajePoID(int dogadjajId)
-        {
-            try
-            {
-                return new JsonResult(DTOManager.VratiPosetioceDogadjaja(dogadjajId));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message.ToString());
-            }
-        }
-        [HttpGet]
-        [Route("PreuzmiSveIzvodjaceZaDogadjaj")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult  VratiSveIzvodjaceDogadjaja(int dogadjajId)
-        {
-            try
-            {
-                return new JsonResult(DTOManager.VratiSveIzvodjaceDogadjaja(dogadjajId));
+                return new JsonResult(DTOManager.VratiSveGrupe());
             }
             catch (Exception e)
             {
@@ -52,14 +23,14 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
         }
         [HttpPost]
-        [Route("DodajDogadjaje")]
+        [Route("DodajGrupu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DodajDogadjaje([FromBody]DogadjajBasic d)
+        public IActionResult DodajGrupu([FromBody] GrupaBasic gb)
         {
             try
             {
-                DTOManager.DodajDogadjaj(d);
-                return Ok($"Uspešno ste dodali dogadjaj: {d.Naziv}.");
+                DTOManager.DodajGrupu(gb);
+                return Ok($"Uspešno ste dodali grupu: {gb.Naziv}.");
             }
             catch (Exception e)
             {
@@ -67,20 +38,52 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
         }
         [HttpPost]
-        [Route("DodajIzvodjacaNaDogadjaj")]
+        [Route("DodajClanaGrupi")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DodajIzvodjacaNaDogadjaj(int dogadjajId, int izvodjacId)
+        public IActionResult DodajClanaGrupi(int grupaId, int posetilacid)
         {
             try
             {
-                DTOManager.DodajIzvodjacaNaDogadjaj(dogadjajId, izvodjacId);
-                return Ok($"Uspešno ste dodali izvodajce sa id-jem: {izvodjacId} na dogadjaj sa id-jem:{dogadjajId}.");
+                DTOManager.DodajClanaGrupi(grupaId, posetilacid);
+                return Ok($"Uspešno ste dodali grupu: {grupaId} i njegovog clana {posetilacid}.");
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message.ToString());
             }
         }
-
+        [HttpPut]
+        [Route("IzmeniGrupu")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult IzmeniGrupu(GrupaBasic gb)
+        {
+            try
+            {
+                bool uspeh = DTOManager.IzmeniGrupu(gb);
+                if (uspeh)
+                    return Ok($"Uspešno ste izmenili grupu: {gb.Naziv}.");
+                else
+                    return NotFound($"Grupa sa ID {gb.Id} nije pronađena.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message.ToString());
+            }
+        }
+        [HttpDelete]
+        [Route("ObrisiGrupu")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult ObrisiGrupu(int grupaId)
+        {
+            try
+            {
+                DTOManager.ObrisiGrupu(grupaId);
+                return Ok($"Uspešno ste obrisali grupu koji ima id: {grupaId}.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message.ToString());
+            }
+        }
     }
 }

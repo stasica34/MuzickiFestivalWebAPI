@@ -14,22 +14,71 @@ namespace Muzicki_festival.Mapiranje
         public UlaznicaMapiranjaL()
         {
             Table("ULAZNICA");
-            Id(x => x.ID_ULAZNICE, "ID_ULAZNICE").GeneratedBy.TriggerIdentity();
+            Id(x => x.ID_ULAZNICE, "ID_ULAZNICE").GeneratedBy.SequenceIdentity("ULAZNICA_PK"); //mora ovako
             Map(x => x.OSNOVNA_CENA, "OSNOVNA_CENA").Not.Nullable();
             Map(x => x.NACIN_PLACANJA, "NACIN_PLACANJA").Not.Nullable();
             Map(x => x.DATUM_KUPOVINE, "DATUM_KUPOVINE").Not.Nullable();
             Map(x => x.TIP_ULAZNICE, "TIP_ULAZNICE").CustomType<EnumStringType<TipUlaznice>>().Not.Nullable();
 
-            //mapiranje reference 1:N veze Ulaznica-Posetilac
+            HasOne(x => x.KUPAC_ID)
+                .PropertyRef("Ulaznica")
+                .Cascade.All()
+                .Constrained()
+                .LazyLoad();
 
-            //lazyload znaci da se ucitava samo id vrednost iz tabele posetilac
-            //po defautu je lazyload ukljucen
-            //kada radimo sa referencama i vezama da radimo sa lazyloadom
+            References(x => x.Dogadjaj, "DOGADJAJ_ID").Cascade.None().LazyLoad();
+        }
+    }
 
-            References(x => x.KUPAC_ID, "KUPAC_ID").LazyLoad().Cascade.All();
+    public class VipMapiranja : SubclassMap<Muzicki_festival.Entiteti.Vip>
+    {
+        public VipMapiranja()
+        {
+            Table("VIP");
+            KeyColumn("ID_ULAZNICE");
 
-            //n:m veza sa dogadjejm
-            References(x => x.Dogadjaj, "DOGADJAJ_ID").LazyLoad().Cascade.All();
+            HasMany(x => x.Pogodnosti)
+                .Table("VIP_POGODNOSTI")
+                .KeyColumn(("ID_ULAZNICE"))
+                .Element("POGODNOST")
+                .Cascade.All();
+        }
+    }
+
+    public class JednodnevnaMapiranje : SubclassMap<Muzicki_festival.Entiteti.Jednodnevna>
+    {
+        public JednodnevnaMapiranje()
+        {
+            Table("JEDNODNEVNA");
+            KeyColumn("ID_ULAZNICE");
+
+            Map(x => x.DAN_VAZENJA, "DAN_VAZENJA").Not.Nullable();
+        }
+    }
+
+    public class VisednevnaMapiranje : SubclassMap<Muzicki_festival.Entiteti.Visednevna>
+    {
+        public VisednevnaMapiranje()
+        {
+            Table("VISEDNEVNA");
+            KeyColumn("ID_ULAZNICE");
+            Map(x => x.BROJ_DANA, "BROJ_DANA");
+            HasMany(x => x.Dani).
+                Table("VISEDNEVNA_DANI")
+                .KeyColumn(("ID_ULAZNICE"))
+                .Element("DAN_VAZENJA").
+                Cascade.All();
+        }
+    }
+
+    public class AkreditacijaMapiranje : SubclassMap<Muzicki_festival.Entiteti.Akreditacija>
+    {
+        public AkreditacijaMapiranje()
+        {
+            Table("AKREDITACIJA");
+            KeyColumn("ID_ULAZNICE");
+
+            Map(x => x.TIP, "TIP").CustomType<EnumStringType<TipAkreditacije>>();
         }
     }
 }

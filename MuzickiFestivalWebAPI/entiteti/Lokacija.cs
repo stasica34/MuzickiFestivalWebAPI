@@ -16,15 +16,15 @@ namespace Muzicki_festival.Entiteti
     public abstract class Lokacija
     {
         public virtual int ID { get; set; }
-        public virtual string? OPIS { get; set; }
-        public virtual int? MAX_KAPACITET { get; set; }
-        public virtual string? NAZIV { get; set; }
-        public virtual string? GPS_KOORDINATE { get; set; }
+        public virtual string OPIS { get; set; }
+        public virtual int MAX_KAPACITET { get; set; }
+        public virtual string NAZIV { get; set; }
+        public virtual string GPS_KOORDINATE { get; set; }
         public virtual TipLokacije TIP_LOKACIJE { get; set; }
         public virtual IList<Dogadjaj> Dogadjaji { get; set; }
 
         // Ovo koriste samo kombinovana i otvorena ali mora da bude ovde jer u suprotnom ne radi mapiranje
-        public virtual IList<DostupnaOprema>? DOSTUPNA_OPREMA { get; set; }
+        public virtual IList<DostupnaOprema> DOSTUPNA_OPREMA { get; set; }
         public Lokacija()
         {
             Dogadjaji = new List<Dogadjaj>();
@@ -37,9 +37,9 @@ namespace Muzicki_festival.Entiteti
 
     public class ZatvorenaLokacija : Lokacija
     {
-        public virtual string? TIP_PROSTORA { get; set; }
-        public virtual string? KLIMA { get; set; }
-        public virtual string? DOSTUPNOST_SEDENJA { get; set; }
+        public virtual string TIP_PROSTORA { get; set; }
+        public virtual string KLIMA { get; set; }
+        public virtual string DOSTUPNOST_SEDENJA { get; set; }
 
         public ZatvorenaLokacija()
             : base()
@@ -59,9 +59,9 @@ namespace Muzicki_festival.Entiteti
 
     public class KombinovanaLokacija : Lokacija
     {
-        public virtual string? TIP_PROSTORA { get; set; }
-        public virtual string? KLIMA { get; set; }
-        public virtual string? DOSTUPNOST_SEDENJA { get; set; }
+        public virtual string TIP_PROSTORA { get; set; }
+        public virtual string KLIMA { get; set; }
+        public virtual string DOSTUPNOST_SEDENJA { get; set; }
 
         public KombinovanaLokacija()
             : base()

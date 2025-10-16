@@ -9,7 +9,7 @@ namespace Muzicki_festival.Entiteti
     public class DostupnaOprema
     {
         public virtual int ID { get; set; }
-        public virtual string? NAZIV { get; set; }
-        public virtual Lokacija? Lokacija { get; set; }
+        public virtual string NAZIV { get; set; }
+        public virtual Lokacija Lokacija { get; set; }
     }
 }

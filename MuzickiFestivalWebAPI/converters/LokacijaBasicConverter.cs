@@ -17,16 +17,19 @@ public class LokacijaBasicConverter : JsonConverter<LokacijaBasic>
             if (!root.TryGetProperty("tipLokacije", out JsonElement tipElement))
                 throw new JsonException("Polje 'tipLokacije' je obavezno.");
 
-            TipLokacije tip = (TipLokacije)tipElement.GetInt32();
-            //u json se pise kao tiplokacije kao int
+            string tipString = tipElement.GetString() ?? throw new JsonException("tipLokacije ne može biti null.");
+
+            if (!Enum.TryParse<TipLokacije>(tipString, true, out var tip))
+                throw new JsonException($"Nepoznat tip lokacije: {tipString}");
+
             string json = root.GetRawText();
 
             return tip switch
             {
-                TipLokacije.ZATVORENA => JsonSerializer.Deserialize<ZatvorenaLokacijaBasic>(json, options), //0
-                TipLokacije.OTVORENA => JsonSerializer.Deserialize<OtvorenaLokacijaBasic>(json, options),//1
-                TipLokacije.KOMBINOVANA => JsonSerializer.Deserialize<KombinovanaLokacijaBasic>(json, options), //2
-                _ => throw new JsonException("Nepoznat tip lokacije.")
+                TipLokacije.ZATVORENA => JsonSerializer.Deserialize<ZatvorenaLokacijaBasic>(json, options),
+                TipLokacije.OTVORENA => JsonSerializer.Deserialize<OtvorenaLokacijaBasic>(json, options),
+                TipLokacije.KOMBINOVANA => JsonSerializer.Deserialize<KombinovanaLokacijaBasic>(json, options),
+                _ => throw new JsonException($"Nepoznat tip lokacije: {tipString}")
             };
         }
     }

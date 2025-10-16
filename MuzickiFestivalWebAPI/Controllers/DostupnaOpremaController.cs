@@ -29,6 +29,10 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
+                if (d.Lokacija == null || d.Lokacija.Id == 0)
+                {
+                    return BadRequest("Lokacija za datu opremu ne postoji, morate prvo dodati lokaciju.");
+                }
                 DTOManager.DodajDostupnuOpremu(d);
                 return Ok(d);
             }
@@ -40,12 +44,12 @@ namespace MuzickiFestivalWebAPI.Controllers
         [HttpDelete]
         [Route("ObrisiDostupnuOpremu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ObrisiDostupnuOpremu(DostupnaOpremaBasic o)
+        public IActionResult ObrisiDostupnuOpremu(int iddostupne)
         {
             try
             {
-                DTOManager.ObrisiDostupnuOpremu(o);
-                return Ok($"Uspešno ste obrisali dostupnu opremu koji ima id: {o.Id}.");
+                DTOManager.ObrisiDostupnuOpremu(iddostupne);
+                return Ok($"Uspešno ste obrisali dostupnu opremu koji ima id: {iddostupne}.");
             }
             catch (Exception e)
             {

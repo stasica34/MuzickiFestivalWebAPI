@@ -9,16 +9,15 @@ namespace Muzicki_festival.DTOs
 {
     public class DogadjajView
     {
-        private string naziv1;
-        private string naziv2;
-
         public int Id { get; set; }
-        public string? Naziv { get; set; }
-        public string? Tip { get; set; }
+        public string Naziv { get; set; }
+        public string Tip { get; set; }
         public string? Opis { get; set; }
+
         public DateTime DatumPocetka { get; set; }
         public DateTime DatumKraja { get; set; }
 
+        public string? LokacijaNaziv { get; set; }
         public DogadjajView(Dogadjaj st)
         {
             this.Id = st.ID;
@@ -28,37 +27,41 @@ namespace Muzicki_festival.DTOs
             this.DatumPocetka = st.DATUM_VREME_POCETKA;
             this.DatumKraja = st.DATUM_VREME_KRAJA;
         }
-        public DogadjajView(int id, string naziv1, string tip, string opis, DateTime datumPocetka, DateTime datumKraja, string naziv2)
+        public DogadjajView(int id, string naziv, string tip, string opis, DateTime datumPocetka, DateTime datumKraja, string lokacijaNaziv)
         {
             Id = id;
-            this.naziv1 = naziv1;
+            Naziv = naziv;
             Tip = tip;
             Opis = opis;
             DatumPocetka = datumPocetka;
             DatumKraja = datumKraja;
-            this.naziv2 = naziv2;
+            LokacijaNaziv = lokacijaNaziv;
         }
     }
 
     public class DogadjajBasic
     {
-        //mora sa get i set da bi se dodavalo preko API-ja
-        public DogadjajBasic Id { get; set; }
+        public int Id { get; set; }
         public string Naziv { get; set; }
         public string Tip { get; set; }
-        public string Opis { get; set; }
+        public string? Opis { get; set; }
+
         public DateTime DatumPocetka { get; set; }
         public DateTime DatumKraja { get; set; }
-        public LokacijaBasic Lokacija { get; set; }
 
-        public DogadjajBasic(string naziv, string tip, string opis, DateTime datumPocetka, DateTime datumKraja, LokacijaBasic lokacija)
+        public LokacijaBasic Lokacija { get; set; }
+        public IList<IzvodjacBasic>? Izvodjaci { get; set; }
+        public DogadjajBasic() { }
+        public DogadjajBasic(int id, string naziv, string tip, string opis, DateTime datumPocetka, DateTime datumKraja, LokacijaBasic lokacija, IList<IzvodjacBasic> izvodjaci)
         {
+            Id = id;
             Naziv = naziv;
             Tip = tip;
             Opis = opis;
             DatumPocetka = datumPocetka;
             DatumKraja = datumKraja;
             Lokacija = lokacija;
+            Izvodjaci = izvodjaci;
         }
     }
 

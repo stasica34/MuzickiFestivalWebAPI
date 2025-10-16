@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Muzicki_festival.DTOs
@@ -33,10 +34,11 @@ namespace Muzicki_festival.DTOs
     {
         public int ID { get; set; }
         public string Naziv { get; set; }
-        public string Adresa { get; set; }
+        public string? Adresa { get; set; }
         public string KontaktOsoba { get; set; }
 
-        public IList<IzvodjacBasic> Izvodjaci = new List<IzvodjacBasic>();
+        public IList<IzvodjacBasic> Izvodjaci { get; set; } = new List<IzvodjacBasic>();
+
         public IList<MenadzerskaAgencijaKontaktView>? KontaktPodaci { get; set; }
 
         public MenadzerskaAgencijaBasic() { }
@@ -52,12 +54,9 @@ namespace Muzicki_festival.DTOs
 
     public class MenadzerskaAgencijaKontaktView
     {
-        public int ID { get; set; }
-        //[JsonPropertyName("tip")]
-        // public TipKontakta TIP_KONTAKTA { get; set; }
-        public TipKontakta Tip { get; set; }
-        public string Vrednost { get; set; }
-
+        public int? ID { get; set; }
+        public TipKontakta? Tip { get; set; }
+        public string? Vrednost { get; set; }
         public MenadzerskaAgencijaKontaktView() { }
         public MenadzerskaAgencijaKontaktView(int id, TipKontakta tip, string vrednost)
         {
@@ -70,8 +69,10 @@ namespace Muzicki_festival.DTOs
     public class MenadzerskaAgencijaKontaktBasic
     {
         public int ID { get; set; }
+        [JsonPropertyName("tip_Kontakta")]
+        //mora json da bude sisto kao ime propertija
         public TipKontakta TIP_KONTAKTA { get; set; }
-        public string Vrednost { get; set; }
+        public string? Vrednost { get; set; }
         public MenadzerskaAgencijaBasic MenadzerkaAgencija { get; set; }
 
         public MenadzerskaAgencijaKontaktBasic() { }

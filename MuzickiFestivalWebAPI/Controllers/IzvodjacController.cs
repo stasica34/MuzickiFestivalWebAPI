@@ -151,8 +151,11 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.IzmeniIzvodjaca(i);
-                return Ok($"Uspešno ste izmenili izvodajca: {i.Ime}");
+                bool uspeh = DTOManager.IzmeniIzvodjaca(i);
+                if (uspeh)
+                    return Ok($"Uspešno ste izmenili izvodjaca: {i.Ime}.");
+                else
+                    return NotFound($"Izvodjac sa ID {i.Id} nije pronađena.");
             }
             catch (Exception e)
             {

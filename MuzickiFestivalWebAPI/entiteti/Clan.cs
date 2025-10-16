@@ -11,11 +11,11 @@ namespace Muzicki_festival.Entiteti
     {
         public virtual int ID { get; set; }
         //visevrednosni atribut
-        public virtual string? ULOGA { get; set; }
-        public virtual string? IME { get; set; }
-        public virtual string? INSTRUMENT { get; set; }
+        public virtual string ULOGA { get; set; }
+        public virtual string IME { get; set; }
+        public virtual string INSTRUMENT { get; set; }
 
-        public virtual Bend? BEND { get; set; }
+        public virtual Bend BEND { get; set; }
 
         public Clan()
         {

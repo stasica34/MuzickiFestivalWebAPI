@@ -117,9 +117,11 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                //return new JsonResult(DTOManager.IzmeniMenadzerskuAgenciju(mb)); vraca samo true/ false
-                DTOManager.IzmeniMenadzerskuAgenciju(mb);
-                return Ok($"Uspešno ste izmenili menadžersku agenciju: {mb.Naziv}.");
+                bool uspeh = DTOManager.IzmeniMenadzerskuAgenciju(mb);
+                if (uspeh)
+                    return Ok($"Uspešno ste izmenili menadžersku agenciju: {mb.Naziv}.");
+                else
+                    return NotFound($"Menadžerska agencija sa ID {mb.ID} nije pronađena.");
             }
             catch (Exception e)
             {
@@ -166,6 +168,5 @@ namespace MuzickiFestivalWebAPI.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }

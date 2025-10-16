@@ -9,9 +9,9 @@ namespace Muzicki_festival.Entiteti
     public class MenadzerskaAgencija
     {
         public virtual int ID { get; set; }
-        public virtual string? NAZIV { get; set; }
-        public virtual string? ADRESA { get; set; }
-        public virtual string? KONTAKT_OSOBA { get; set; }
+        public virtual string NAZIV { get; set; }
+        public virtual string ADRESA { get; set; }
+        public virtual string KONTAKT_OSOBA { get; set; }
         //poverizvanj 1:n sa izvodjacem
         public virtual IList<Izvodjac> Izvodjaci { get; set; }
 

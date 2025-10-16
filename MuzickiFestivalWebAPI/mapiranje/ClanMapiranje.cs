@@ -13,7 +13,7 @@ namespace Muzicki_festival.Mapiranje
         public ClanMapiranje()
         {
             Table("CLAN");
-            Id(x => x.ID).Column("CLAN_ID").GeneratedBy.Identity();
+            Id(x => x.ID).Column("CLAN_ID").GeneratedBy.TriggerIdentity();
             Map(x => x.IME, "IME");
             Map(x => x.INSTRUMENT, "INSTRUMENT");
             Map(x => x.ULOGA).Column("ULOGA");

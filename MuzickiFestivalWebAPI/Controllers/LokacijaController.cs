@@ -28,7 +28,8 @@ namespace MuzickiFestivalWebAPI.Controllers
         public IActionResult PreuzmiLokacijePoId(int id)
         {
             try
-            {
+            { 
+
                 return new JsonResult(DTOManager.VratiLokaciju(id));
             }
             catch (Exception e)
@@ -58,13 +59,34 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.IzmeniLokaciju(nova);
-                return Ok($"Uspešno ste izmenili lokaciju: {nova.Naziv}.");
+                bool uspeh = DTOManager.IzmeniLokaciju(nova);
+                if (uspeh)
+                    return Ok($"Uspešno ste izmenili lokaciju: {nova.Naziv}.");
+                else
+                    return NotFound($"Lokacija sa ID {nova.Id} nije pronađena.");
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message.ToString());
             }
         }
+
+        [HttpDelete]
+        [Route("ObrisiLokaciju")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult ObrisiLokaciju(int idLokacije)
+        {
+            try
+            {
+                DTOManager.ObrisiLokaciju(idLokacije);
+                return Ok($"Uspešno ste obrisali lokaciju koji ima id: {idLokacije}.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message.ToString());
+            }
+        }
+
+
     }
 }
