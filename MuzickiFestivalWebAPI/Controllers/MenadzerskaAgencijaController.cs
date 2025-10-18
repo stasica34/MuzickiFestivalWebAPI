@@ -146,22 +146,16 @@ namespace MuzickiFestivalWebAPI.Controllers
         [HttpDelete]
         [Route("ObrisiKontaktMenadzerskeAgencije")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ObrisiKontaktMenadzerskeAgencije(int kontaktId, int agencijaId)
+        public IActionResult ObrisiKontaktMenadzerskeAgencije([FromBody]MenadzerskaAgencijaKontaktBasic k)
         {
             try
             {
-                var kontakt = new MenadzerskaAgencijaKontaktBasic
+                bool uspesno = DTOManager.ObrisiKontaktMenadzerskeAgencije(k);
+                if (!uspesno)
                 {
-                    ID = kontaktId,
-                    MenadzerkaAgencija = new MenadzerskaAgencijaBasic { ID = agencijaId }
-                };
-
-                bool rezultat = DTOManager.ObrisiKontaktMenadzerskeAgencije(kontakt);
-
-                if (!rezultat)
-                    return BadRequest("Brisanje nije uspelo. Proverite ID-eve.");
-
-                return Ok($"Uspešno ste obrisali kontakt (ID: {kontaktId}) menadžerske agencije (ID: {agencijaId}).");
+                    return BadRequest("Brisanje kontakta nije uspelo. Proverite da li kontakt i agencija postoje.");
+                }
+                return Ok($"Uspešno ste obrisali kontakt (ID: {k.ID}) menadžerske agencije (ID: {k.MenadzerkaAgencija?.ID}).");
             }
             catch (Exception e)
             {

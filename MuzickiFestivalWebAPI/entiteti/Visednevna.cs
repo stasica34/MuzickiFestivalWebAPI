@@ -10,10 +10,20 @@ namespace Muzicki_festival.Entiteti
     {
         public virtual int BROJ_DANA { get; set; }
         //visevrednsoti atributi - lista dana
-        public virtual IList<DateTime> Dani { get; set; }
+        private IList<DateTime> _dani;
+        public virtual IList<DateTime> Dani
+        {
+            get => _dani;
+            set
+            {
+                _dani = value;
+                BROJ_DANA = _dani?.Count ?? 0;
+            }
+        }
         public Visednevna()
         {
             Dani = new List<DateTime>();
+            BROJ_DANA = Dani.Count;
         }
     }
 }

@@ -15,7 +15,8 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveAgencije());
+                var agencije = DTOManager.VratiSveAgencije();
+                return Ok(agencije);
             }
             catch (Exception e)
             {

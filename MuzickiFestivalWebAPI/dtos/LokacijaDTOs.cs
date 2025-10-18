@@ -11,22 +11,14 @@ namespace Muzicki_festival.DTOs
     public abstract class LokacijaView
     {
         public int Id { get; set; }
-        public string? Opis { get; set; }
-        public string? Naziv { get; set; }
-        public string? Gps_koordinate { get; set; }  
-        public int? Kapacitet { get; set; }
+        public string Opis { get; set; }
+        public string Naziv { get; set; }
+        public string Gps_koordinate { get; set; }  
+        public int Kapacitet { get; set; }
         
         public TipLokacije TipLokacije { get; set; }
-        public LokacijaView(Lokacija l)
-        {
-            Id = l.ID;
-            Opis = l.OPIS;
-            Naziv = l.NAZIV;
-            Gps_koordinate = l.GPS_KOORDINATE;
-            Kapacitet = l.MAX_KAPACITET;
-            TipLokacije = l.TIP_LOKACIJE;
-        }
-       protected LokacijaView(int id, string opis, string naziv, string gps_koordinate, int kapacitet, TipLokacije tipLokacije) {
+
+        public LokacijaView(int id, string opis, string naziv, string gps_koordinate, int kapacitet, TipLokacije tipLokacije) {
             Id = id;
             Opis = opis;
             Naziv = naziv;
@@ -43,9 +35,9 @@ namespace Muzicki_festival.DTOs
 
     public class ZatvorenaLokacijaView : LokacijaView
     {
-        public string? Tip_prostora { get; set; }
-        public string? Klima { get; set; }
-        public string? Dostupnost_sedenja { get; set; }
+        public string Tip_prostora { get; set; }
+        public string Klima { get; set; }
+        public string Dostupnost_sedenja { get; set; }
 
         public ZatvorenaLokacijaView(int id, string opis, string naziv, string gps_koordinate, int kapacitet, string tip_prostora, string klima, string dostupnost_sedenja)
             : base(id, opis, naziv, gps_koordinate, kapacitet, TipLokacije.ZATVORENA)
@@ -67,9 +59,9 @@ namespace Muzicki_festival.DTOs
 
     public class KombinovanaLokacijaView : LokacijaView
     {
-        public string? Tip_prostora { get; set; }
-        public string? Klima { get; set; }
-        public string? Dostupnost_sedenja { get; set; }
+        public string Tip_prostora { get; set; }
+        public string Klima { get; set; }
+        public string Dostupnost_sedenja { get; set; }
         public KombinovanaLokacijaView(int id, string opis, string naziv, string gps_koordinate, int kapacitet, string tip_prostora, string klima, string dostupnost_sedenja)
             : base(id, opis, naziv, gps_koordinate, kapacitet, TipLokacije.KOMBINOVANA)
         {
@@ -78,24 +70,19 @@ namespace Muzicki_festival.DTOs
             Dostupnost_sedenja = dostupnost_sedenja;
         }
     }
-    //jedan nacin za serijalizaciju i deserijalizaciju apstraktne klase
-    //[JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
-    //[JsonDerivedType(typeof(ZatvorenaLokacijaBasic), typeDiscriminator: "zatvorena")]
-    //[JsonDerivedType(typeof(OtvorenaLokacijaBasic), typeDiscriminator: "otvorena")]
-    //[JsonDerivedType(typeof(KombinovanaLokacijaBasic), typeDiscriminator: "kombinovana")]
 
     public abstract class LokacijaBasic
     {
         public int Id { get; set; }
-        public string? Opis { get; set; }
-        public string? Naziv { get; set; }
-        public string? Gps_koordinate { get; set; }
+        public string Opis { get; set; }
+        public string Naziv { get; set; }
+        public string Gps_koordinate { get; set; }
         public int Kapacitet { get; set; }
 
         public TipLokacije TipLokacije { get; set; }    
 
         // public IList<DogadjajView> Dogadjaji { get; set; }
-        public LokacijaBasic() { }
+
         public LokacijaBasic(int id, string opis, string naziv, string gps_koordinate, int kapacitet, TipLokacije tipLokacije)
         {
             Id = id;
@@ -109,10 +96,10 @@ namespace Muzicki_festival.DTOs
 
     public class ZatvorenaLokacijaBasic : LokacijaBasic
     {
-        public string? Tip_prostora { get; set; }
-        public string? Klima { get; set; }
-        public string? Dostupnost_sedenja { get; set; }
-        public ZatvorenaLokacijaBasic() { }
+        public string Tip_prostora { get; set; }
+        public string Klima { get; set; }
+        public string Dostupnost_sedenja { get; set; }
+
         public ZatvorenaLokacijaBasic(int id, string opis, string naziv, string gps_koordinate, int kapacitet, string tip_prostora, string klima, string dostupnost_sedenja)
             : base(id, opis, naziv, gps_koordinate, kapacitet, TipLokacije.ZATVORENA)
         {
@@ -132,10 +119,9 @@ namespace Muzicki_festival.DTOs
 
     public class KombinovanaLokacijaBasic : LokacijaBasic
     {
-        public string? Tip_prostora { get; set; }
-        public string? Klima { get; set; }
-        public string? Dostupnost_sedenja { get; set; }
-        public KombinovanaLokacijaBasic() { }
+        public string Tip_prostora { get; set; }
+        public string Klima { get; set; }
+        public string Dostupnost_sedenja { get; set; }
         public KombinovanaLokacijaBasic(int id, string opis, string naziv, string gps_koordinate, int kapacitet, string tip_prostora, string klima, string dostupnost_sedenja)
             : base(id, opis, naziv, gps_koordinate, kapacitet, TipLokacije.KOMBINOVANA)
         {

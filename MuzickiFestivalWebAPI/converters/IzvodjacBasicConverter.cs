@@ -16,16 +16,16 @@ public class IzvodjacBasicConverter : JsonConverter<IzvodjacBasic>
                 throw new JsonException("Polje 'tipIzvodjaca' je obavezno.");
 
             string tipString = tipElement.GetString() ?? throw new JsonException("tipIzvodjaca ne može biti null.");
-
-            if (!Enum.TryParse<TipIzvodjaca>(tipString, true, out var tip))
+            
+            if (!Enum.TryParse<IzvodjacTip>(tipString, true, out var tip))
                 throw new JsonException($"Nepoznat tip izvodjaca: {tipString}");
 
             string json = root.GetRawText();
 
             return tip switch
             {
-                TipIzvodjaca.SOLO_UMETNIK => JsonSerializer.Deserialize<Solo_UmetnikBasic>(json, options),
-                TipIzvodjaca.BEND => JsonSerializer.Deserialize<BendBasic>(json, options),
+                IzvodjacTip.SOLO_UMETNIK => JsonSerializer.Deserialize<Solo_UmetnikBasic>(json, options),
+                IzvodjacTip.BEND => JsonSerializer.Deserialize<BendBasic>(json, options),
                 _ => throw new JsonException("Nepoznat tip izvođača.")
             };
         }

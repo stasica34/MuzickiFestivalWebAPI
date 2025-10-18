@@ -17,9 +17,10 @@ namespace Muzicki_festival.Mapiranje
             Map(x => x.IME, "IME").Not.Nullable();
             Map(x => x.PREZIME, "PREZIME").Not.Nullable();
             Map(x => x.EMAIL, "EMAIL").Not.Nullable();
-            References(x => x.Ulaznica)
-                .Column("ULAZNICA_ID")
-                .Cascade.All();
+            HasOne(x => x.Ulaznica)
+                 .PropertyRef("KUPAC_ID")
+                 .Cascade.All();
+
 
             References(x => x.GRUPA, "GRUPA_ID").LazyLoad().Cascade.None();
             //visevrednosni atribut

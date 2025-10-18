@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Muzicki_festival.DTOs
@@ -11,7 +10,8 @@ namespace Muzicki_festival.DTOs
     {
         public int Id { get; set; }
         public string Naziv { get; set; }
-        public string Adresa { get; set; }
+        public string Adresa { get; set; }  
+
         public AgencijaOrganizatorView(int id, string naziv, string adresa)
         {
             Id = id;
@@ -29,8 +29,8 @@ namespace Muzicki_festival.DTOs
     {
         public int Id { get; set; }
         public string Naziv { get; set; }
-        public string Adresa { get; set; }
-        public List<PosetilacBasic>? Posetioci { get; set; }
+        public string Adresa { get; set; }  
+        public List<PosetilacBasic> Posetioci {  get; set; } = new List<PosetilacBasic>();
         public AgencijaOrganizatorBasic() { }
         public AgencijaOrganizatorBasic(int id, string naziv, string adresa, List<PosetilacBasic> posetioci)
         {

@@ -31,7 +31,7 @@ namespace MuzickiFestivalWebAPI.Controllers
             {
                 bool uspeh = DTOManager.IzmeniUlaznicu(ub);
                 if (uspeh)
-                    return Ok($"Uspešno ste izmenili ulaznicu: {ub.Tip}.");
+                    return Ok($"Uspešno ste izmenili ulaznicu: {ub.TipUlaznice}.");
                 else
                     return NotFound($"Ulaznica sa ID {ub.Id} nije pronađena.");
             }

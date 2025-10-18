@@ -13,25 +13,14 @@ namespace Muzicki_festival.DTOs
     {
         public int Id { get; set; }
         public string Ime { get; set; }
-        public string? Drzava_porekla { get; set; }
-        public string? Email { get; set; }
-        public string? Kontakt_osoba { get; set; }
-        public string? Telefon { get; set; }
-        public string? Zanr { get; set; }
-        public TipIzvodjaca tipIzvodajaca { get; set; }
-        public IzvodjacView(Izvodjac i)
-        {
-            Id = i.ID;
-            Ime = i.IME;
-            Drzava_porekla = i.DRZAVA_POREKLA;
-            Email = i.EMAIL;
-            Kontakt_osoba = i.KONTAKT_OSOBA;
-            Telefon = i.TELEFON;
-            Zanr = i.Zanr;
-            tipIzvodajaca = i.TIP_IZVODJACA;
-        }
-        //protected konstruktor koji ce koristiti izvedene klase
-        protected  IzvodjacView(int id, string ime, string drzava_porekla, string email, string kontakt_osoba, string telefon, string zanr,TipIzvodjaca tipIzvodajaca)
+        public string Drzava_porekla { get; set; }
+        public string Email { get; set; }
+        public string Kontakt_osoba { get; set; }
+        public string Telefon {  get; set; }
+        public string Zanr {  get; set; }
+        public IzvodjacTip tipIzvodajaca { get; set; }
+
+        public IzvodjacView(int id, string ime, string drzava_porekla, string email, string kontakt_osoba, string telefon, string zanr,IzvodjacTip tipIzvodajaca)
         {
             Id = id;
             Ime = ime;
@@ -48,7 +37,7 @@ namespace Muzicki_festival.DTOs
     {
         public int Broj_clanova { get; set; }
         public BendView(int id, string ime, string drzava_porekla, string email, string kontakt_osoba, string telefon, string zanr, int broj_clanova)
-            : base(id, ime, drzava_porekla, email, kontakt_osoba, telefon, zanr, TipIzvodjaca.BEND)
+            : base(id, ime, drzava_porekla, email, kontakt_osoba, telefon, zanr, IzvodjacTip.BEND)
         {
             Broj_clanova = broj_clanova;
         }
@@ -56,10 +45,10 @@ namespace Muzicki_festival.DTOs
 
     public class Solo_umetnikView : IzvodjacView
     {
-        public string Svira_instrument { get; set; }
-        public string Tip_instrumenta { get; set; }
+        public string Svira_instrument {  get; set; }
+        public string Tip_instrumenta {  get; set; }
         public Solo_umetnikView(int id, string ime, string drzava_porekla, string email, string kontakt_osoba, string telefon, string zanr,string svira_instrument, string tip_instrumenta)
-            : base(id, ime, drzava_porekla, email, kontakt_osoba, telefon, zanr, TipIzvodjaca.SOLO_UMETNIK)
+            : base(id, ime, drzava_porekla, email, kontakt_osoba, telefon, zanr, IzvodjacTip.SOLO_UMETNIK)
         {
             Svira_instrument = svira_instrument;
             Tip_instrumenta = tip_instrumenta;
@@ -75,13 +64,13 @@ namespace Muzicki_festival.DTOs
         public string Kontakt_osoba { get; set; }
         public string Telefon { get; set; }
         public string Zanr { get; set; }
-        public TipIzvodjaca TipIzvodjaca { get; set; }
+        public IzvodjacTip TipIzvodajaca {  get; set; }
 
-        public MenadzerskaAgencijaBasic? MenadzerskaAgencija { get; set; }
-        public DogadjajBasic Dogadjaj { get; set; }
+        public MenadzerskaAgencijaBasic MenadzerskaAgencija { get; set; }
+        public DogadjajBasic Dogadjaj {  get; set; }
 
         public IzvodjacBasic() { }
-        public IzvodjacBasic(int id, string ime,string drzava_poreka, string email,string kontakt_osoba, string telefon, string zanr, TipIzvodjaca tipIzvodjaca, MenadzerskaAgencijaBasic menadzerskaAgencija, DogadjajBasic dogadjaj)
+        public IzvodjacBasic(int id, string ime,string drzava_poreka, string email,string kontakt_osoba, string telefon, string zanr, IzvodjacTip tipIzvodjaca, MenadzerskaAgencijaBasic menadzerskaAgencija, DogadjajBasic dogadjaj)
         {
             Id = id;
             Ime = ime;
@@ -89,7 +78,7 @@ namespace Muzicki_festival.DTOs
             Email = email;
             Kontakt_osoba = kontakt_osoba;
             Telefon = telefon;
-            TipIzvodjaca = tipIzvodjaca;
+            TipIzvodajaca = tipIzvodjaca;
             MenadzerskaAgencija = menadzerskaAgencija;
             Zanr = zanr;
             Dogadjaj = dogadjaj;
@@ -103,7 +92,7 @@ namespace Muzicki_festival.DTOs
 
         public Solo_UmetnikBasic() { }
         public Solo_UmetnikBasic(int id, string ime, string drzava_poreka, string email, string kontakt_osoba, string telefon, string zanr, MenadzerskaAgencijaBasic menadzerskaAgencija, DogadjajBasic dogadjaj,string svira_instrument, string tip_instrumenta)
-            :base(id, ime, drzava_poreka, email, kontakt_osoba, telefon, zanr, TipIzvodjaca.SOLO_UMETNIK, menadzerskaAgencija, dogadjaj)
+            :base(id, ime, drzava_poreka, email, kontakt_osoba, telefon, zanr, IzvodjacTip.SOLO_UMETNIK, menadzerskaAgencija, dogadjaj)
         {
             Svira_instrument = svira_instrument;
             Tip_instrumenta = tip_instrumenta;
@@ -114,7 +103,7 @@ namespace Muzicki_festival.DTOs
     {
         public BendBasic() { }
         public BendBasic(int id, string ime, string drzava_poreka, string email, string kontakt_osoba, string telefon, string zanr, MenadzerskaAgencijaBasic menadzerskaAgencija, DogadjajBasic dogadjaj)
-            : base(id, ime, drzava_poreka, email, kontakt_osoba, telefon, zanr, TipIzvodjaca.BEND, menadzerskaAgencija, dogadjaj)
+            : base(id, ime, drzava_poreka, email, kontakt_osoba, telefon, zanr, IzvodjacTip.BEND, menadzerskaAgencija, dogadjaj)
         {
 
         }

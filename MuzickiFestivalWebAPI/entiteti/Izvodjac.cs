@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Muzicki_festival.Entiteti
 {
-    public enum TipIzvodjaca
+    public enum IzvodjacTip
     {
         SOLO_UMETNIK ,
         BEND 
@@ -19,7 +19,7 @@ namespace Muzicki_festival.Entiteti
 
         public virtual string KONTAKT_OSOBA { get; set; }
 
-        public virtual TipIzvodjaca TIP_IZVODJACA { get; set; }
+        public virtual IzvodjacTip TIP_IZVODJACA { get; set; }
 
         public virtual string TELEFON { get; set; }
         public virtual string Zanr { get; set; }

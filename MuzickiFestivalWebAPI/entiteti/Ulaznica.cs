@@ -21,7 +21,7 @@ namespace Muzicki_festival.Entiteti
         public virtual string NACIN_PLACANJA { get; set; }
         public virtual DateTime DATUM_KUPOVINE { get; set; }
         public virtual TipUlaznice TIP_ULAZNICE { get; set; }
-        //veza 1:N sa posetiocem
+        //veza 1:1 sa posetiocem
         public virtual Posetilac KUPAC_ID { get; set; }
 
         public virtual Dogadjaj Dogadjaj { get; set; }

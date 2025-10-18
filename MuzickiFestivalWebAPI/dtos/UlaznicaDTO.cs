@@ -11,19 +11,19 @@ namespace Muzicki_festival.DTOs
     {
         public int Id { get; set; }
         public float OsnovnaCena { get; set; }
-        public string? NacinPlacanja { get; set; }
+        public string NacinPlacanja { get; set; }
         public DateTime DatumKupovine { get; set; }
-        public TipUlaznice? Tip { get; set; }
-        public DogadjajBasic Dogadjaj { get;set; }
-
+        public TipUlaznice TipUlaznice { get; set; }
+        public DogadjajBasic Dogadjaj { get; set; }
         public UlaznicaBasic() { }
+
         public UlaznicaBasic(int id, float osnovnaCena, string nacinPlacanja, DateTime datumKupovine, TipUlaznice tipUlaznice, DogadjajBasic dogadjaj)
         {
             Id = id;
             OsnovnaCena = osnovnaCena;
             NacinPlacanja = nacinPlacanja;
             DatumKupovine = datumKupovine;
-            Tip = tipUlaznice;
+            TipUlaznice = tipUlaznice;
             Dogadjaj = dogadjaj;
         }
     }
@@ -32,6 +32,7 @@ namespace Muzicki_festival.DTOs
     {
         public DateTime DatumVazenja { get; set; }
         public JednodnevnaBasic() { }
+
         public JednodnevnaBasic(int id, float osnovnaCena, string nacinPlacanja, DateTime datumKupovine, DogadjajBasic dogadjaj, DateTime datumVazenja)
             : base(id, osnovnaCena, nacinPlacanja, datumKupovine, TipUlaznice.JEDNODNEVNA, dogadjaj)
         {
@@ -42,6 +43,7 @@ namespace Muzicki_festival.DTOs
     public class ViseDnevnaBasic : UlaznicaBasic
     {
         public IList<DateTime> DatumiVazenja { get; set; }
+
         public ViseDnevnaBasic() { }
         public ViseDnevnaBasic(int id, float osnovnaCena, string nacinPlacanja, DateTime datumKupovine, DogadjajBasic dogadjaj, IList<DateTime> datumiVazenja)
             : base(id, osnovnaCena, nacinPlacanja, datumKupovine, TipUlaznice.VISEDNEVNA, dogadjaj)
@@ -52,9 +54,9 @@ namespace Muzicki_festival.DTOs
 
     public class VIPBasic : UlaznicaBasic
     {
-        public IList<string> Pogodnosti { get; set; }
+        public IList<string> Pogodnosti {  get; set; }
 
-        public VIPBasic() { }
+        public VIPBasic() { } 
         public VIPBasic(int id, float osnovnaCena, string nacinPlacanja, DateTime datumKupovine, DogadjajBasic dogadjaj, IList<string> pogodnosti)
             : base(id, osnovnaCena, nacinPlacanja, datumKupovine, TipUlaznice.VIP, dogadjaj)
         {
@@ -64,7 +66,8 @@ namespace Muzicki_festival.DTOs
 
     public class AkreditacijaBasic : UlaznicaBasic
     {
-        public TipAkreditacije Tip { get; set; }
+        public TipAkreditacije Tip {  get; set; }
+
         public AkreditacijaBasic() { }
         public AkreditacijaBasic(int id, float osnovnaCena, string nacinPlacanja, DateTime datumKupovine, DogadjajBasic dogadjaj, TipAkreditacije tip)
              :base(id, osnovnaCena, nacinPlacanja, datumKupovine, TipUlaznice.AKREDITACIJA, dogadjaj)

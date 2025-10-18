@@ -19,9 +19,12 @@ namespace Muzicki_festival.Mapiranje
             Id(x => x.ID, "ID").GeneratedBy.SequenceIdentity("IZVODJAC_PK");
             Map(x => x.IME, "IME").Not.Nullable();
             Map(x => x.DRZAVA_POREKLA, "DRZAVA_POREKLA").Not.Nullable();
-            Map(x => x.EMAIL, "EMAIL").Not.Nullable();
+            Map(x => x.EMAIL, "EMAIL").Nullable();
             Map(x => x.KONTAKT_OSOBA, "KONTAKT_OSOBA").Nullable();
-            Map(x => x.TIP_IZVODJACA, "TIP_IZVODJACA").CustomType<EnumStringType<TipIzvodjaca>>().Not.Nullable();
+            Map(x => x.TIP_IZVODJACA, "TIP_IZVODJACA").CustomType<EnumStringType<IzvodjacTip>>().Not.Nullable();
+            Map(x => x.TELEFON, "TELEFON").Not.Nullable();
+            Map(x => x.Zanr, "ZANR").Nullable();
+
             //mapiranje 1:n sa menadzerskom agencijom
             References(x => x.MenadzerskaAgencija).Column("MENADZERSKA_AGENCIJA_ID").LazyLoad().Cascade.None();
             //mapiranje n:m
@@ -30,11 +33,6 @@ namespace Muzicki_festival.Mapiranje
               .ParentKeyColumn("IZVODJAC_ID")
               .ChildKeyColumn("DOGADJAJ_ID")
               .Cascade.All();
-
-            //svuda gde mi je nasladjivanje da uradim i sa discriminator sa tipom
-            //visevrednosni atribut
-            Map(x => x.TELEFON, "TELEFON");
-            Map(x => x.Zanr, "ZANR");
 
             HasMany(x => x.Lista_tehnickih_zahteva)
                .Table("IZVODJAC_TEHNICKI_ZAHTEVI")
@@ -49,15 +47,15 @@ namespace Muzicki_festival.Mapiranje
             {
                 Table("SOLO_UMETNIK");
                 KeyColumn("ID");
-                Map(x => x.SVIRA_INSTRUMENT, "SVIRA_INSTRUMENT").Not.Nullable();
-                Map(x => x.TIP_INSTRUMENTA, "TIP_INSTRUMENTA").Not.Nullable();
+                Map(x => x.SVIRA_INSTRUMENT, "SVIRA_INSTRUMENT").Nullable();
+                Map(x => x.TIP_INSTRUMENTA, "TIP_INSTRUMENTA").Nullable();
 
                 //visevrednosni atribut
                 HasMany(x => x.VOKALNE_SPOSOBNOSTI)
                     .Table("VOKALNE_SPOSOBNOSTI")
                     .KeyColumn(("ID_SOLOUMETNIK"))
                     .Element("NAZIV")
-                    .Cascade.All();
+                    .Cascade.AllDeleteOrphan();
             }
         }
         public class BendMapiranja : SubclassMap<Muzicki_festival.Entiteti.Bend>
@@ -70,7 +68,9 @@ namespace Muzicki_festival.Mapiranje
                 HasMany(x => x.Clanovi)
                     .KeyColumn("BEND_ID")//fk tabela u tabeli Clan
                     .Inverse()
-                    .Cascade.All().LazyLoad();
+                    .Cascade.All()
+                    .Cascade.AllDeleteOrphan()
+                    .LazyLoad();
             }
 
         }

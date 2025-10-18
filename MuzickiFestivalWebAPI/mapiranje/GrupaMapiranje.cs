@@ -18,7 +18,7 @@ namespace Muzicki_festival.Mapiranje
             Id(x => x.ID_GRUPE, "ID_GRUPE").GeneratedBy.TriggerIdentity();
             Map(x => x.NAZIV, "NAZIV");
             //mapiranje  1:N sa AgencijaOrganizator
-            References(x => x.AgencijaID, "AGENCIJA_ORGANIZATOR_ID").LazyLoad().Cascade.None();
+            References(x => x.AgencijaID, "AGENCIJA_ORGANIZATOR_ID").LazyLoad().Cascade.All();
 
             //mapiranje
             HasMany(x=> x.Clanovi).KeyColumn("GRUPA_ID").LazyLoad().Cascade.None();

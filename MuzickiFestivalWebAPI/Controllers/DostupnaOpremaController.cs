@@ -44,12 +44,12 @@ namespace MuzickiFestivalWebAPI.Controllers
         [HttpDelete]
         [Route("ObrisiDostupnuOpremu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ObrisiDostupnuOpremu(int iddostupne)
+        public IActionResult ObrisiDostupnuOpremu(DostupnaOpremaBasic o)
         {
             try
             {
-                DTOManager.ObrisiDostupnuOpremu(iddostupne);
-                return Ok($"Uspešno ste obrisali dostupnu opremu koji ima id: {iddostupne}.");
+                DTOManager.ObrisiDostupnuOpremu(o);
+                return Ok($"Uspešno ste obrisali dostupnu opremu koji ima id: {o.Id}.");
             }
             catch (Exception e)
             {
