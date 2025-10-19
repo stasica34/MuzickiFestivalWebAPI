@@ -35,18 +35,15 @@ namespace Muzicki_festival.DTOs
         public string Naziv {get; set; }
         public string Adresa { get; set; }
         public string KontaktOsoba { get; set; }
-
-        public IList<IzvodjacBasic> Izvodjaci {  get; set; }
-        public IList<MenadzerskaAgencijaKontaktView> KontaktPodaci {  get; set; }
+        public IList<MenadzerskaAgencijaKontaktView>? KontaktPodaci {  get; set; }
 
         public MenadzerskaAgencijaBasic() { }
-        public MenadzerskaAgencijaBasic(int id, string naziv, string adresa, string kontaktOsoba, List<IzvodjacBasic> izvodjaci)
+        public MenadzerskaAgencijaBasic(int id, string naziv, string adresa, string kontaktOsoba)
         {
             ID = id;
             Naziv = naziv;
             Adresa = adresa;
             KontaktOsoba = kontaktOsoba;
-            Izvodjaci = izvodjaci;
         }
     }
 

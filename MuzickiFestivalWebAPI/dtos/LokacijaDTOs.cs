@@ -11,7 +11,7 @@ namespace Muzicki_festival.DTOs
     public abstract class LokacijaView
     {
         public int Id { get; set; }
-        public string Opis { get; set; }
+        public string? Opis { get; set; }
         public string Naziv { get; set; }
         public string Gps_koordinate { get; set; }  
         public int Kapacitet { get; set; }
@@ -74,7 +74,7 @@ namespace Muzicki_festival.DTOs
     public abstract class LokacijaBasic
     {
         public int Id { get; set; }
-        public string Opis { get; set; }
+        public string? Opis { get; set; }
         public string Naziv { get; set; }
         public string Gps_koordinate { get; set; }
         public int Kapacitet { get; set; }

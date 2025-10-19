@@ -13,9 +13,9 @@ namespace Muzicki_festival.Mapiranje
         {
             Table("MENADZERSKA_AGENCIJA");
             Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
-            Map(x => x.NAZIV, "NAZIV").Not.Nullable();
+            Map(x => x.NAZIV, "NAZIV").Not.Nullable().Unique();
             Map(x => x.ADRESA, "ADRESA").Not.Nullable();
-            Map(x => x.KONTAKT_OSOBA, "KONTAKT_OSOBA").Not.Nullable();
+            Map(x => x.KONTAKT_OSOBA, "KONTAKT_OSOBA").Not.Nullable().Unique();
             HasMany(x => x.Izvodjaci)
                 .KeyColumn("MENADZERSKA_AGENCIJA_ID") //FK kolona u tabeli Izvodjac
                 .Inverse()
@@ -23,7 +23,7 @@ namespace Muzicki_festival.Mapiranje
             HasMany(x => x.KONTAKT_PODACI)
                 .KeyColumn("MENADZERSKA_AGENCIJA_ID")
                 .Inverse()
-                .Cascade.All();
+                .Cascade.AllDeleteOrphan();
         }
     }
 }

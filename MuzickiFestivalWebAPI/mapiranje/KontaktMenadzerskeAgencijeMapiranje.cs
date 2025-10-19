@@ -17,7 +17,7 @@ namespace Muzicki_festival.Mapiranje
             Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
             Map(x => x.TIP_KONTAKTA, "TIP_KONTAKTA").CustomType<EnumStringType<TipKontakta>>().Not.Nullable();
             Map(x => x.VREDNOST, "VREDNOST").Not.Nullable();
-            References(x => x.MENADZERSKA_AGENCIJA).Column("MENADZERSKA_AGENCIJA_ID").LazyLoad().Cascade.None();
+            References(x => x.MENADZERSKA_AGENCIJA).Column("MENADZERSKA_AGENCIJA_ID").Not.Nullable().LazyLoad().Cascade.AllDeleteOrphan();
         }
 
     }

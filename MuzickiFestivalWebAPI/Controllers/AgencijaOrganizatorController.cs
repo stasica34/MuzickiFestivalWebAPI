@@ -16,13 +16,18 @@ namespace MuzickiFestivalWebAPI.Controllers
             try
             {
                 var agencije = DTOManager.VratiSveAgencije();
+
+                if (agencije == null || !agencije.Any())
+                    return Ok("Nema podataka o agencijama.");
+
                 return Ok(agencije);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja agencija: {e.Message}");
             }
         }
+
         [HttpPost]
         [Route("DodajAgenciju")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -35,40 +40,48 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno dodavanje agencije: {e.Message}");
             }
         }
+
         [HttpPut]
         [Route("IzmeniAgencijuOrganizator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult IzmeniAgencijuOrganizator(AgencijaOrganizatorBasic ab)
+        public IActionResult IzmeniAgencijuOrganizator([FromBody] AgencijaOrganizatorBasic ab)
         {
             try
             {
                 bool uspeh = DTOManager.IzmeniAgencijuOrganizator(ab);
+
                 if (uspeh)
                     return Ok($"Uspešno ste izmenili agenciju: {ab.Naziv}.");
                 else
-                    return NotFound($"Menadžerska agencija sa ID {ab.Id} nije pronađena.");
+                    return NotFound($"Agencija sa ID {ab.Id} nije pronađena.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešna izmena agencije: {e.Message}");
             }
         }
+
         [HttpDelete]
         [Route("ObrisiAgenciju")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ObrisiAgenciju(int agencijaId)
+        public IActionResult ObrisiAgenciju([FromQuery] int agencijaId)
         {
             try
             {
-                DTOManager.ObrisiAgenciju(agencijaId);
-                return Ok($"Uspešno ste obrisali agenciju koji ima id: {agencijaId}.");
+                bool uspeh = DTOManager.ObrisiAgenciju(agencijaId);
+
+                if (uspeh)
+                    return Ok($"Uspešno ste obrisali agenciju sa ID: {agencijaId}.");
+                else
+                    return NotFound($"Agencija sa ID {agencijaId} nije pronađena.");
+
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno brisanje agencije: {e.Message}");
             }
         }
     }

@@ -15,13 +15,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveMenadzerskeAgencije());
+                var agencije = DTOManager.VratiSveMenadzerskeAgencije();
+                if (agencije == null || !agencije.Any())
+                    return Ok("Nema dostupnih menadžerskih agencija.");
+
+                return Ok(agencije);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja menadžerskih agencija: {e.Message}");
             }
         }
+
         [HttpGet]
         [Route("PreuzmiMenadzerskePoID")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -29,13 +34,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiMenadzerskuAgenciju(id));
+                var agencija = DTOManager.VratiMenadzerskuAgenciju(id);
+                if (agencija == null)
+                    return NotFound($"Menadžerska agencija sa ID {id} nije pronađena.");
+
+                return Ok(agencija);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja menadžerske agencije: {e.Message}");
             }
         }
+
         [HttpGet]
         [Route("PreuzmiMenadzerskePoIzvodjacu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -43,13 +53,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiMenadzerskuIzvodjaca(idIzvodjaca));
+                var agencija = DTOManager.VratiMenadzerskuIzvodjaca(idIzvodjaca);
+                if (agencija == null)
+                    return NotFound($"Menadžerska agencija za izvođača sa ID {idIzvodjaca} nije pronađena.");
+
+                return Ok(agencija);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja menadžerske agencije: {e.Message}");
             }
         }
+
         [HttpGet]
         [Route("PreuzmiIzvodjaceMenadzerskeAgencije")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,13 +72,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiIzvodjaceMenadzerskeAgencije(idMenadzerskeAgencije));
+                var izvodjaci = DTOManager.VratiIzvodjaceMenadzerskeAgencije(idMenadzerskeAgencije);
+                if (izvodjaci == null || !izvodjaci.Any())
+                    return Ok("Nema izvođača za ovu menadžersku agenciju.");
+
+                return Ok(izvodjaci);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja izvođača: {e.Message}");
             }
         }
+
         [HttpGet]
         [Route("PreuzmiKonktatPodatke")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -71,14 +91,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveKontaktPodatke(idMenadzerskeAgencije));
+                var kontakti = DTOManager.VratiSveKontaktPodatke(idMenadzerskeAgencije);
+                if (kontakti == null || !kontakti.Any())
+                    return Ok("Nema kontakt podataka za ovu menadžersku agenciju.");
+
+                return Ok(kontakti);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja kontakt podataka: {e.Message}");
             }
         }
-        //ovde ne mogu da se dodaju kontakt podaci, ne dodaje se u bazi
+
         [HttpPost]
         [Route("DodajMenadzerskuAgenciju")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -87,14 +111,14 @@ namespace MuzickiFestivalWebAPI.Controllers
             try
             {
                 DTOManager.DodajMenadzerskuAgenciju(ma);
-                return Ok($"Uspešno ste dodali menadžersku agenciji: {ma.Naziv}.");
+                return Ok($"Uspešno ste dodali menadžersku agenciju: {ma.Naziv}.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom dodavanja menadžerske agencije: {e.Message}");
             }
         }
-        //ovde se dodaju u bazi
+
         [HttpPost]
         [Route("DodajKontaktMenadzerskeAgencije")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -103,17 +127,18 @@ namespace MuzickiFestivalWebAPI.Controllers
             try
             {
                 DTOManager.DodajKontaktMenadzerskeAgencije(kontakt);
-                return Ok($"Uspešno ste dodali kontkat menadžerskoj agenciji: {kontakt.MenadzerkaAgencija.Naziv}.");
+                return Ok($"Uspešno ste dodali kontakt menadžerskoj agenciji: {kontakt.MenadzerkaAgencija?.Naziv}.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom dodavanja kontakta: {e.Message}");
             }
         }
+
         [HttpPut]
         [Route("IzmeniMenadzerskuAgenciju")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult IzmeniMenadzerskuAgenciju(MenadzerskaAgencijaBasic mb)
+        public IActionResult IzmeniMenadzerskuAgenciju([FromBody] MenadzerskaAgencijaBasic mb)
         {
             try
             {
@@ -125,9 +150,10 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom izmene menadžerske agencije: {e.Message}");
             }
         }
+
         [HttpDelete]
         [Route("ObrisiMenadzerskuAgenciju")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -135,18 +161,22 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.ObrisiMenadzerskuAgenciju(id);
-                return Ok($"Uspešno ste obrisali menadžersku agenciju koja ima id: {id}.");
+                bool uspeh = DTOManager.ObrisiMenadzerskuAgenciju(id);
+                if (uspeh)
+                    return Ok($"Uspešno ste obrisali menadžersku agenciju sa ID: {id}.");
+                else
+                    return NotFound($"Menadžerska agencija sa ID {id} nije pronađena.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom brisanja menadžerske agencije: {e.Message}");
             }
         }
+
         [HttpDelete]
         [Route("ObrisiKontaktMenadzerskeAgencije")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ObrisiKontaktMenadzerskeAgencije([FromBody]MenadzerskaAgencijaKontaktBasic k)
+        public IActionResult ObrisiKontaktMenadzerskeAgencije([FromBody] MenadzerskaAgencijaKontaktBasic k)
         {
             try
             {
@@ -159,7 +189,7 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest($"Greška prilikom brisanja kontakta: {e.Message}");
             }
         }
     }

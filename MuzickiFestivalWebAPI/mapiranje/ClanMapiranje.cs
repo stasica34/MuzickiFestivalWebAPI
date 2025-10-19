@@ -14,11 +14,11 @@ namespace Muzicki_festival.Mapiranje
         {
             Table("CLAN");
             Id(x => x.ID).Column("CLAN_ID").GeneratedBy.TriggerIdentity();
-            Map(x => x.IME, "IME");
-            Map(x => x.INSTRUMENT, "INSTRUMENT");
-            Map(x => x.ULOGA).Column("ULOGA");
+            Map(x => x.IME, "IME").Not.Nullable();
+            Map(x => x.INSTRUMENT, "INSTRUMENT").Not.Nullable();
+            Map(x => x.ULOGA).Column("ULOGA").Not.Nullable();
 
-            References(x => x.BEND, "BEND_ID").LazyLoad().Cascade.All();
+            References(x => x.BEND, "BEND_ID").Not.Nullable().LazyLoad().Cascade.None();
             //visevrednosni atribut
         }
     }

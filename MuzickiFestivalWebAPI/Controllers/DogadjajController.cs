@@ -16,56 +16,75 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveDogadjaje());
+                var dogadjaji = DTOManager.VratiSveDogadjaje();
+
+                if (dogadjaji == null || !dogadjaji.Any())
+                    return Ok("Nema podataka o događajima.");
+
+                return Ok(dogadjaji);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja događaja: {e.Message}");
             }
         }
+
         [HttpGet]
-        [Route("PreuzmiDogadjajePoID")]
+        [Route("VratiPosetioceDogadjaja")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PreuzmiDogadjajePoID(int dogadjajId)
+        public IActionResult VratiPosetioceDogadjaja(int dogadjajId)
         {
             try
             {
-                return new JsonResult(DTOManager.VratiPosetioceDogadjaja(dogadjajId));
+                var posetioci = DTOManager.VratiPosetioceDogadjaja(dogadjajId);
+
+                if (posetioci == null || !posetioci.Any())
+                    return Ok($"Nema posetilaca za događaj sa ID: {dogadjajId}.");
+
+                return Ok(posetioci);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja posetilaca: {e.Message}");
             }
         }
+
         [HttpGet]
         [Route("PreuzmiSveIzvodjaceZaDogadjaj")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult  VratiSveIzvodjaceDogadjaja(int dogadjajId)
+        public IActionResult VratiSveIzvodjaceDogadjaja(int dogadjajId)
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveIzvodjaceDogadjaja(dogadjajId));
+                var izvodjaci = DTOManager.VratiSveIzvodjaceDogadjaja(dogadjajId);
+
+                if (izvodjaci == null || !izvodjaci.Any())
+                    return Ok($"Nema izvođača za događaj sa ID: {dogadjajId}.");
+
+                return Ok(izvodjaci);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja izvođača: {e.Message}");
             }
         }
+
         [HttpPost]
         [Route("DodajDogadjaje")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DodajDogadjaje([FromBody]DogadjajBasic d)
+        public IActionResult DodajDogadjaje([FromBody] DogadjajBasic d)
         {
             try
             {
                 DTOManager.DodajDogadjaj(d);
-                return Ok($"Uspešno ste dodali dogadjaj: {d.Naziv}.");
+                return Ok($"Uspešno ste dodali događaj: {d.Naziv}.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno dodavanje događaja: {e.Message}");
             }
         }
+
         [HttpPost]
         [Route("DodajIzvodjacaNaDogadjaj")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -73,14 +92,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.DodajIzvodjacaNaDogadjaj(dogadjajId, izvodjacId);
-                return Ok($"Uspešno ste dodali izvodajce sa id-jem: {izvodjacId} na dogadjaj sa id-jem:{dogadjajId}.");
+                bool uspeh = DTOManager.DodajIzvodjacaNaDogadjaj(dogadjajId, izvodjacId);
+
+                if (uspeh)
+                    return Ok($"Uspešno ste dodali izvođača sa ID: {izvodjacId} na događaj sa ID: {dogadjajId}.");
+                else
+                    return NotFound($"Događaj ili izvođač nije pronađen za dati ID.");
+
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno dodavanje izvođača na događaj: {e.Message}");
             }
         }
-
     }
 }

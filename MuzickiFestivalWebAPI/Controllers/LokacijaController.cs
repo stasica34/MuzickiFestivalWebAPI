@@ -15,47 +15,41 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveLokacije());
+                var lokacije = DTOManager.VratiSveLokacije();
+                if (lokacije == null || !lokacije.Any())
+                    return Ok("Nema dostupnih lokacija.");
+
+                return Ok(lokacije);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja lokacija: {e.Message}");
             }
         }
+
         [HttpGet]
         [Route("PreuzmiLokacijePoId")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult PreuzmiLokacijePoId(int id)
         {
             try
-            { 
+            {
+                var lokacija = DTOManager.VratiLokaciju(id);
+                if (lokacija == null)
+                    return NotFound($"Lokacija sa ID {id} nije pronađena.");
 
-                return new JsonResult(DTOManager.VratiLokaciju(id));
+                return Ok(lokacija);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja lokacije: {e.Message}");
             }
         }
-        [HttpPost]
-        [Route("DodajLokacije")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DodajLokaciju([FromBody] LokacijaBasic l)
-        {
-            try
-            {
-                DTOManager.DodajLokaciju(l);
-                return Ok(l);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message.ToString());
-            }
-        }
+
         [HttpPut]
         [Route("IzmeniLokaciju")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult IzmeniLokaciju(LokacijaBasic nova)
+        public IActionResult IzmeniLokaciju([FromBody] LokacijaBasic nova)
         {
             try
             {
@@ -67,7 +61,7 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom izmene lokacije: {e.Message}");
             }
         }
 
@@ -78,15 +72,16 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.ObrisiLokaciju(idLokacije);
-                return Ok($"Uspešno ste obrisali lokaciju koji ima id: {idLokacije}.");
+                bool uspeh = DTOManager.ObrisiLokaciju(idLokacije);
+                if (uspeh)
+                    return Ok($"Uspešno ste obrisali lokaciju sa ID: {idLokacije}.");
+                else
+                    return NotFound($"Lokacija sa ID {idLokacije} nije pronađena.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom brisanja lokacije: {e.Message}");
             }
         }
-
-
     }
 }

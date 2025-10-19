@@ -15,17 +15,22 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveUlaznice());
+                var ulaznice = DTOManager.VratiSveUlaznice();
+                if (ulaznice == null || !ulaznice.Any())
+                    return Ok("Nema dostupnih ulaznica.");
+
+                return Ok(ulaznice);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja ulaznica: {e.Message}");
             }
         }
+
         [HttpPut]
         [Route("IzmeniUlaznicu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult IzmeniUlaznicu(UlaznicaBasic ub)
+        public IActionResult IzmeniUlaznicu([FromBody] UlaznicaBasic ub)
         {
             try
             {
@@ -37,9 +42,10 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom izmene ulaznice: {e.Message}");
             }
         }
+
         [HttpDelete]
         [Route("ObrisiUlaznicu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,12 +53,15 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.ObrisiUlaznicu(ulaznicaID);
-                return Ok($"Uspešno ste obrisali ulaznicu koji ima id: {ulaznicaID}.");
+                bool uspesno = DTOManager.ObrisiUlaznicu(ulaznicaID);
+                if (uspesno)
+                    return Ok($"Uspešno ste obrisali ulaznicu koja ima ID: {ulaznicaID}.");
+                else
+                    return NotFound($"Ulaznica sa ID {ulaznicaID} nije pronađena.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom brisanja ulaznice: {e.Message}");
             }
         }
     }

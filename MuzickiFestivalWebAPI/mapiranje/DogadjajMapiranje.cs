@@ -17,7 +17,7 @@ namespace Muzicki_festival.Mapiranje
 
             Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
 
-            Map(x => x.NAZIV, "NAZIV").Not.Nullable();
+            Map(x => x.NAZIV, "NAZIV").Not.Nullable().UniqueKey("UQ_DOGADJAJ_NAZIV_LOKACIJA");
             Map(x => x.TIP, "TIP").Not.Nullable();
             Map(x => x.OPIS, "OPIS").Nullable();
             Map(x => x.DATUM_VREME_POCETKA, "DATUM_VREME_POCETKA").Not.Nullable();
@@ -26,6 +26,7 @@ namespace Muzicki_festival.Mapiranje
             References(x => x.Lokacija)
                 .Column("LOKACIJA_ID")
                 .Not.Nullable()
+                .UniqueKey("UQ_DOGADJAJ_NAZIV_LOKACIJA")
                 .Cascade.None();
 
             HasManyToMany(x => x.Izvodjaci)

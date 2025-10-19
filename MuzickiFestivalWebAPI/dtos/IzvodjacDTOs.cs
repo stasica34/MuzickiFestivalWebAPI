@@ -64,13 +64,13 @@ namespace Muzicki_festival.DTOs
         public string Kontakt_osoba { get; set; }
         public string Telefon { get; set; }
         public string Zanr { get; set; }
-        public IzvodjacTip TipIzvodajaca {  get; set; }
+        public IzvodjacTip tipIzvodjaca {  get; set; }
 
         public MenadzerskaAgencijaBasic MenadzerskaAgencija { get; set; }
         public DogadjajBasic Dogadjaj {  get; set; }
 
         public IzvodjacBasic() { }
-        public IzvodjacBasic(int id, string ime,string drzava_poreka, string email,string kontakt_osoba, string telefon, string zanr, IzvodjacTip tipIzvodjaca, MenadzerskaAgencijaBasic menadzerskaAgencija, DogadjajBasic dogadjaj)
+        public IzvodjacBasic(int id, string ime,string drzava_poreka, string email,string kontakt_osoba, string telefon, string zanr, IzvodjacTip tipizvodjaca, MenadzerskaAgencijaBasic menadzerskaAgencija, DogadjajBasic dogadjaj)
         {
             Id = id;
             Ime = ime;
@@ -78,7 +78,7 @@ namespace Muzicki_festival.DTOs
             Email = email;
             Kontakt_osoba = kontakt_osoba;
             Telefon = telefon;
-            TipIzvodajaca = tipIzvodjaca;
+            tipIzvodjaca = tipizvodjaca;
             MenadzerskaAgencija = menadzerskaAgencija;
             Zanr = zanr;
             Dogadjaj = dogadjaj;

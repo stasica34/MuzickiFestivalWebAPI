@@ -15,13 +15,18 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                return new JsonResult(DTOManager.VratiSveGrupe());
+                var grupe = DTOManager.VratiSveGrupe();
+                if (grupe == null || !grupe.Any())
+                    return Ok("Nema dostupnih grupa.");
+
+                return Ok(grupe);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Greška prilikom preuzimanja grupa: {e.Message}");
             }
         }
+
         [HttpPost]
         [Route("DodajGrupu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,28 +39,30 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno dodavanje grupe: {e.Message}");
             }
         }
+
         [HttpPost]
         [Route("DodajClanaGrupi")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DodajClanaGrupi(int grupaId, int posetilacid)
+        public IActionResult DodajClanaGrupi(int grupaId, int posetilacId)
         {
             try
             {
-                DTOManager.DodajClanaGrupi(grupaId, posetilacid);
-                return Ok($"Uspešno ste dodali grupu: {grupaId} i njegovog clana {posetilacid}.");
+                DTOManager.DodajClanaGrupi(grupaId, posetilacId);
+                return Ok($"Uspešno ste dodali člana sa ID: {posetilacId} grupi sa ID: {grupaId}.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno dodavanje člana grupi: {e.Message}");
             }
         }
+
         [HttpPut]
         [Route("IzmeniGrupu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult IzmeniGrupu(GrupaBasic gb)
+        public IActionResult IzmeniGrupu([FromBody] GrupaBasic gb)
         {
             try
             {
@@ -67,9 +74,10 @@ namespace MuzickiFestivalWebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešna izmena grupe: {e.Message}");
             }
         }
+
         [HttpDelete]
         [Route("ObrisiGrupu")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -77,12 +85,15 @@ namespace MuzickiFestivalWebAPI.Controllers
         {
             try
             {
-                DTOManager.ObrisiGrupu(grupaId);
-                return Ok($"Uspešno ste obrisali grupu koji ima id: {grupaId}.");
+                bool uspeh = DTOManager.ObrisiGrupu(grupaId);
+                if (uspeh)
+                    return Ok($"Uspešno ste obrisali grupu sa ID: {grupaId}.");
+                else
+                    return NotFound($"Grupa sa ID {grupaId} nije pronađena.");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message.ToString());
+                return BadRequest($"Neuspešno brisanje grupe: {e.Message}");
             }
         }
     }

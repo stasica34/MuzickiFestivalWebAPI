@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Muzicki_festival.DTOs;
+using Muzicki_festival.Entiteti;
+using NHibernate;
+using NHibernate.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using NHibernate.Util;
-using System.Security.Cryptography;
-using NHibernate;
-using Muzicki_festival.Entiteti;
-using Muzicki_festival.DTOs;
+using System.Transactions;
 using ISession = NHibernate.ISession;
 
 namespace Muzicki_festival
@@ -139,7 +140,7 @@ namespace Muzicki_festival
                     return null;
 
                 int id;
-                switch (i.TipIzvodajaca)
+                switch (i.tipIzvodjaca)
                 {
                     case IzvodjacTip.SOLO_UMETNIK:
                         Solo_Umetnik novi = new Solo_Umetnik
@@ -148,7 +149,7 @@ namespace Muzicki_festival
                             DRZAVA_POREKLA = i.Drzava_porekla,
                             EMAIL = i.Email,
                             TELEFON = i.Telefon,
-                            TIP_IZVODJACA = i.TipIzvodajaca,
+                            TIP_IZVODJACA = i.tipIzvodjaca,
                             Zanr = i.Zanr,
                             KONTAKT_OSOBA = i.Kontakt_osoba,
                             SVIRA_INSTRUMENT = (i as Solo_UmetnikBasic).Svira_instrument,
@@ -173,7 +174,7 @@ namespace Muzicki_festival
                             DRZAVA_POREKLA = i.Drzava_porekla,
                             EMAIL = i.Email,
                             TELEFON = i.Telefon,
-                            TIP_IZVODJACA = i.TipIzvodajaca,
+                            TIP_IZVODJACA = i.tipIzvodjaca,
                             KONTAKT_OSOBA = i.Kontakt_osoba,
                             BROJ_CLANOVA = 0,
                             Zanr = i.Zanr,
@@ -222,10 +223,10 @@ namespace Muzicki_festival
                         kljucGreske = "KONTAKT_OSOBA";
                         porukaKlijentu = "Kontakt osoba sadrži nedozvoljene znakove. Dozvoljena su samo slova, razmaci i crtica.";
                     }
-                    else if (poruka.Contains("CHK_IZVODJAC_EMAIL"))
+                    else if (poruka.Contains("CK_IZVODJAC_TIP"))
                     {
-                        kljucGreske = "EMAIL";
-                        porukaKlijentu = "Email mora biti u adekvatnom formatu (slova, brojevi, @).";
+                        kljucGreske = "TIP";
+                        porukaKlijentu = "Morati izabrati tip.";
                     }
                     else if (poruka.Contains("UK_IZVODJAC_EMAIL"))
                     {
@@ -542,6 +543,11 @@ namespace Muzicki_festival
                     {
                         kljucGreske = "EMAIL";
                         porukaKlijentu = "Email mora biti u adekvatnom formatu (slova, brojevi, @).";
+                    }
+                    else if (poruka.Contains("CK_IZVODJAC_TIP"))
+                    {
+                        kljucGreske = "TIP";
+                        porukaKlijentu = "Tip izvođača nije ispravno izabran!";
                     }
                     else if (poruka.Contains("UK_IZVODJAC_EMAIL"))
                     {
@@ -1200,12 +1206,7 @@ namespace Muzicki_festival
                     string kljucGreske = "";
                     string porukaKlijentu = "";
 
-                    if (poruka.Contains("CHK_LOKACIJA_MAX_KAPACITET"))
-                    {
-                        kljucGreske = "KAPACITET";
-                        porukaKlijentu = "Maksimalni kapacitet mora biti veći od 0.";
-                    }
-                    else if (poruka.Contains("CHK_DOSTUPNOST_OPREME_NAZIV"))
+                     if (poruka.Contains("CHK_DOSTUPNOST_OPREME_NAZIV"))
                     {
                         kljucGreske = "OPREMA_NAZIV";
                         porukaKlijentu = "Naziv dostupne opreme mora biti u formatu slova.";
@@ -1232,37 +1233,23 @@ namespace Muzicki_festival
             }
         }
 
-        public static bool ObrisiDostupnuOpremu(DostupnaOpremaBasic o)
+        public static bool ObrisiDostupnuOpremu(int iddostupne)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
+                DostupnaOprema oprema = s.Get<DostupnaOprema>(iddostupne);
+                if (oprema == null)
+                    return false;
+                s.Delete(oprema);
+                s.Flush();
+                s.Close();
 
-                using (var transaction = s.BeginTransaction())
-                {
-                    DostupnaOprema oprema = s.Get<DostupnaOprema>(o.Id);
-
-                    if (oprema == null)
-                        return false;
-
-                    if (oprema.Lokacija == null || oprema.Lokacija.ID != o.Lokacija.Id)
-                    {
-                        return false;
-                    }
-                    Lokacija l = s.Get<Lokacija>(oprema.Lokacija.ID);
-                    if (l == null)
-                        return false;
-                    l.DOSTUPNA_OPREMA.Remove(oprema);
-                    s.Delete(oprema);
-                    s.SaveOrUpdate(l);
-                    transaction.Commit();
-
-                    return true;
-                }
+                return true;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
@@ -1618,7 +1605,7 @@ namespace Muzicki_festival
                     if (poruka.Contains("CK_TIP_KONTAKTA"))
                     {
                         kljucGreske = "TIP_KONTAKTA";
-                        porukaKlijentu = "Tip kontakta (email/telefon) mora biti u ispravnom formatu.";
+                        porukaKlijentu = "Tip kontakta (email/telefon) mora biti u ispravnom formatu i imati tacno cifara u broju.";
                     }
                     else if (poruka.Contains("UK_MENADZERSKA_KONTAKT"))
                     {
@@ -1758,6 +1745,11 @@ namespace Muzicki_festival
                     {
                         kljucGreske = "DUPLIKAT";
                         porukaKlijentu = "Kombinacija naziva, lokacije i datuma početka događaja mora biti jedinstvena.";
+                    }
+                    else if (poruka.Contains("CHK_DOGADJAJ_OPIS"))
+                    {
+                        kljucGreske = "OPIS";
+                        porukaKlijentu = "Opis dogadjaja mora da bude u formi slova";
                     }
 
                     if (!string.IsNullOrEmpty(kljucGreske))
@@ -2348,7 +2340,7 @@ namespace Muzicki_festival
                     else if (poruka.Contains("CK_AGENCIJA_ADRESA_FORMAT"))
                     {
                         kljucGreske = "ADRESA_FORMAT";
-                        porukaKlijentu = "Adresa sadrži nedozvoljene znakove. Dozvoljena su slova, brojevi i . , - znakovi.";
+                        porukaKlijentu = "Adresa mora biti u formatu: Ulica Broj[, Grad]";
                     }
                     else if (poruka.Contains("UQ_AGENCIJA_NAZIV"))
                     {

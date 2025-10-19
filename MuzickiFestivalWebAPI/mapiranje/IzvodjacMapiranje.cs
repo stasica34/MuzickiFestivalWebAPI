@@ -19,14 +19,14 @@ namespace Muzicki_festival.Mapiranje
             Id(x => x.ID, "ID").GeneratedBy.SequenceIdentity("IZVODJAC_PK");
             Map(x => x.IME, "IME").Not.Nullable();
             Map(x => x.DRZAVA_POREKLA, "DRZAVA_POREKLA").Not.Nullable();
-            Map(x => x.EMAIL, "EMAIL").Nullable();
+            Map(x => x.EMAIL, "EMAIL").Nullable().Unique();
             Map(x => x.KONTAKT_OSOBA, "KONTAKT_OSOBA").Nullable();
             Map(x => x.TIP_IZVODJACA, "TIP_IZVODJACA").CustomType<EnumStringType<IzvodjacTip>>().Not.Nullable();
-            Map(x => x.TELEFON, "TELEFON").Not.Nullable();
+            Map(x => x.TELEFON, "TELEFON").Nullable();
             Map(x => x.Zanr, "ZANR").Nullable();
 
             //mapiranje 1:n sa menadzerskom agencijom
-            References(x => x.MenadzerskaAgencija).Column("MENADZERSKA_AGENCIJA_ID").LazyLoad().Cascade.None();
+            References(x => x.MenadzerskaAgencija).Column("MENADZERSKA_AGENCIJA_ID").Not.Nullable().LazyLoad().Cascade.None();
             //mapiranje n:m
             HasManyToMany(x => x.Dogadjaji)
               .Table("NASTUPA")
@@ -47,7 +47,7 @@ namespace Muzicki_festival.Mapiranje
             {
                 Table("SOLO_UMETNIK");
                 KeyColumn("ID");
-                Map(x => x.SVIRA_INSTRUMENT, "SVIRA_INSTRUMENT").Nullable();
+                Map(x => x.SVIRA_INSTRUMENT, "SVIRA_INSTRUMENT").Not.Nullable();
                 Map(x => x.TIP_INSTRUMENTA, "TIP_INSTRUMENTA").Nullable();
 
                 //visevrednosni atribut

@@ -22,7 +22,7 @@ namespace Muzicki_festival.Mapiranje
 
             References(x => x.KUPAC_ID)
                     .Column("KUPAC_ID")
-                     .UniqueKey("UK_ULAZNICA_POSETIOC")
+                    .UniqueKey("UK_ULAZNICA_POSETIOC")
                     .Not.Nullable()
                     .Cascade.All()
                     .LazyLoad();
@@ -64,12 +64,12 @@ namespace Muzicki_festival.Mapiranje
         {
             Table("VISEDNEVNA");
             KeyColumn("ID_ULAZNICE");
-            Map(x => x.BROJ_DANA, "BROJ_DANA");
+            Map(x => x.BROJ_DANA, "BROJ_DANA").Not.Nullable().Check("BROJ_DANA > 1"); ;
             HasMany(x => x.Dani).
                 Table("VISEDNEVNA_DANI")
                 .KeyColumn(("ID_ULAZNICE"))
-                .Element("DAN_VAZENJA").
-                Cascade.All();
+                .Element("DAN_VAZENJA")
+                .Cascade.AllDeleteOrphan();
         }
     }
 
@@ -80,7 +80,7 @@ namespace Muzicki_festival.Mapiranje
             Table("AKREDITACIJA");
             KeyColumn("ID_ULAZNICE");
 
-            Map(x => x.TIP, "TIP").CustomType<EnumStringType<TipAkreditacije>>();
+            Map(x => x.TIP, "TIP").CustomType<EnumStringType<TipAkreditacije>>().Check("TIP IN ('SPONZOR', 'PRESS', 'PARTNER')"); ;
         }
     }
 }

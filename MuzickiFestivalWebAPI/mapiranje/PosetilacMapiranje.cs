@@ -16,15 +16,14 @@ namespace Muzicki_festival.Mapiranje
             Id(x => x.ID, "ID").GeneratedBy.TriggerIdentity();
             Map(x => x.IME, "IME").Not.Nullable();
             Map(x => x.PREZIME, "PREZIME").Not.Nullable();
-            Map(x => x.EMAIL, "EMAIL").Not.Nullable();
+            Map(x => x.EMAIL, "EMAIL").Not.Nullable().Unique();
+            Map(x => x.Telefon, "TELEFON").Nullable();
             HasOne(x => x.Ulaznica)
                  .PropertyRef("KUPAC_ID")
                  .Cascade.All();
 
 
             References(x => x.GRUPA, "GRUPA_ID").LazyLoad().Cascade.None();
-            //visevrednosni atribut
-            Map(x => x.Telefon, "TELEFON").Nullable();
         }
     }
 }
