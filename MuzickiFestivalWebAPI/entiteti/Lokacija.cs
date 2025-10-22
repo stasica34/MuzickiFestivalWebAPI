@@ -16,8 +16,8 @@ namespace Muzicki_festival.Entiteti
     public abstract class Lokacija
     {
         public virtual int ID { get; set; }
-        public virtual string OPIS { get; set; }
-        public virtual int? MAX_KAPACITET { get; set; }
+        public virtual string? OPIS { get; set; }
+        public virtual int MAX_KAPACITET { get; set; }
         public virtual string NAZIV { get; set; }
         public virtual string GPS_KOORDINATE { get; set; }
         public virtual TipLokacije TIP_LOKACIJE { get; set; }

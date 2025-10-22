@@ -12,9 +12,9 @@ namespace Muzicki_festival.Entiteti
         public virtual string IME { get; set; }
         public virtual string PREZIME { get; set; }
         public virtual string EMAIL { get; set; }
-        public virtual string Telefon { get; set; }
+        public virtual string? Telefon { get; set; }
         public virtual Ulaznica Ulaznica { get; set; }
-        public virtual Grupa GRUPA { get; set; } 
+        public virtual Grupa? GRUPA { get; set; } 
         public Posetilac()
         {
         }

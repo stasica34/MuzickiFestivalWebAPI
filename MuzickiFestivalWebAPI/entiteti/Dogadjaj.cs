@@ -11,7 +11,7 @@ namespace Muzicki_festival.Entiteti
         public virtual int ID { get; protected set; }
         public virtual string NAZIV { get; set; }
         public virtual string TIP { get; set; }
-        public virtual string OPIS { get; set; }
+        public virtual string? OPIS { get; set; }
         public virtual DateTime DATUM_VREME_POCETKA { get; set; }
         public virtual DateTime DATUM_VREME_KRAJA { get; set; }
         public virtual Lokacija Lokacija { get; set; }
