@@ -828,15 +828,15 @@ namespace Muzicki_festival
                     {
                         case TipLokacije.OTVORENA:
                             OtvorenaLokacija o = l as OtvorenaLokacija;
-                            lokacijeView.Add(new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET ?? 0));
+                            lokacijeView.Add(new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET));
                             break;
                         case TipLokacije.ZATVORENA:
                             ZatvorenaLokacija z = l as ZatvorenaLokacija;
-                            lokacijeView.Add(new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET ?? 0, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA));
+                            lokacijeView.Add(new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET,z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA));
                             break;
                         case TipLokacije.KOMBINOVANA:
                             KombinovanaLokacija k = l as KombinovanaLokacija;
-                            lokacijeView.Add(new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET ?? 0, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA));
+                            lokacijeView.Add(new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA));
                             break;
                     }
                 }
@@ -871,7 +871,7 @@ namespace Muzicki_festival
                         };
 
                         id = (int)s.Save(o);
-                        ret = new OtvorenaLokacijaView(id, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET ?? 0);
+                        ret = new OtvorenaLokacijaView(id, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET);
                         break;
                     case TipLokacije.ZATVORENA:
                         ZatvorenaLokacija z = new ZatvorenaLokacija()
@@ -887,7 +887,7 @@ namespace Muzicki_festival
                         };
 
                         id = (int)s.Save(z);
-                        ret = new ZatvorenaLokacijaView(id, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET ?? 0, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
+                        ret = new ZatvorenaLokacijaView(id, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
                         break;
                     case TipLokacije.KOMBINOVANA:
                         KombinovanaLokacija k = new KombinovanaLokacija()
@@ -903,7 +903,7 @@ namespace Muzicki_festival
                         };
 
                         id = (int)s.Save(k);
-                        ret = new KombinovanaLokacijaView(id, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET ?? 0, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
+                        ret = new KombinovanaLokacijaView(id, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
                         break;
                 }
 
@@ -988,15 +988,15 @@ namespace Muzicki_festival
                     {
                         case TipLokacije.OTVORENA:
                             OtvorenaLokacija o = l as OtvorenaLokacija;
-                            lv = new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET ?? 0);
+                            lv = new OtvorenaLokacijaView(o.ID, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET);
                             break;
                         case TipLokacije.ZATVORENA:
                             ZatvorenaLokacija z = l as ZatvorenaLokacija;
-                            lv = new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET ?? 0, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
+                            lv = new ZatvorenaLokacijaView(z.ID, z.OPIS, z.NAZIV, z.GPS_KOORDINATE, z.MAX_KAPACITET, z.TIP_PROSTORA, z.KLIMA, z.DOSTUPNOST_SEDENJA);
                             break;
                         case TipLokacije.KOMBINOVANA:
                             KombinovanaLokacija k = l as KombinovanaLokacija;
-                            lv = new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET ?? 0, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
+                            lv = new KombinovanaLokacijaView(k.ID, k.OPIS, k.NAZIV, k.GPS_KOORDINATE, k.MAX_KAPACITET, k.TIP_PROSTORA, k.KLIMA, k.DOSTUPNOST_SEDENJA);
                             break;
                     }
                 }
