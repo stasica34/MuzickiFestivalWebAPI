@@ -15,7 +15,7 @@ namespace Muzicki_festival.DTOs
         public string Email { get; set; }
         public string Telefon { get; set; }
 
-        public TipUlaznice UlaznicaTip { get; set; } // da ne menjam konstrukor valjda na jedno mesto treba ovaj podatak samo
+        public TipUlaznice? UlaznicaTip { get; set; } // da ne menjam konstrukor valjda na jedno mesto treba ovaj podatak samo
     
         public PosetilacView(int id, string ime, string prezime, string email, string telefon)
         {
@@ -36,7 +36,7 @@ namespace Muzicki_festival.DTOs
         public string Telefon { get; set; }
 
         public UlaznicaBasic Ulaznica { get; set; }
-        public GrupaBasic Grupa { get; set; }
+        public GrupaBasic? Grupa { get; set; }
         public PosetilacBasic() { }
 
         public PosetilacBasic(int id, string ime, string prezime, string email, string telelfon, UlaznicaBasic ulaznica, GrupaBasic grupa)

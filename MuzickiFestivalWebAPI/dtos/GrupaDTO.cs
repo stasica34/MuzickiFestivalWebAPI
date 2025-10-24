@@ -11,7 +11,7 @@ namespace Muzicki_festival.DTOs
         public int Id { get; set; }
         public string Naziv {  get; set; }
         public string NazivAgencije { get; set; }
-        public List<string> Clanovi { get; set; }
+        public List<string>? Clanovi { get; set; }
 
         public GrupaView(int id, string naziv, string nazivAgencije, List<string> clanovi)
         {
@@ -27,7 +27,7 @@ namespace Muzicki_festival.DTOs
         public int Id { get; set; }
         public string Naziv { get; set; }
         public AgencijaOrganizatorBasic Agencija { get; set; }
-        public List<PosetilacBasic> Clanovi { get; set; }
+        public List<PosetilacBasic>? Clanovi { get; set; }
 
         public GrupaBasic() { }
         public GrupaBasic(int id, string naziv, AgencijaOrganizatorBasic agencija, List<PosetilacBasic> clanovi)

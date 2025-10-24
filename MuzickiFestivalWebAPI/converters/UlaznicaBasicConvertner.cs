@@ -1,48 +1,27 @@
 ﻿using Muzicki_festival.DTOs;
 using Muzicki_festival.Entiteti;
-using System.Reflection.Metadata;
 using System.Text.Json;
+using System.Text.Json.Nodes; 
 using System.Text.Json.Serialization;
 
 public class UlaznicaBasicConverter : JsonConverter<UlaznicaBasic>
 {
     public override UlaznicaBasic Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType != JsonTokenType.StartObject)
-            throw new JsonException();
+        JsonNode? node = JsonNode.Parse(ref reader);
 
-        string? tipUlazniceStr = null;
-        Dictionary<string, JsonElement> properties = new();
+        if (node == null)
+            throw new JsonException("JSON objekat za ulaznicu je neispravan.");
+        JsonNode? tipUlazniceNode = node["tipUlaznice"];
 
-        while (reader.Read())
-        {
-            if (reader.TokenType == JsonTokenType.EndObject)
-                break;
+        if (tipUlazniceNode == null || tipUlazniceNode.GetValueKind() != JsonValueKind.String)
+            throw new JsonException("Polje 'tipUlaznice' je obavezno ili neispravnog formata.");
 
-            if (reader.TokenType == JsonTokenType.PropertyName)
-            {
-                string propertyName = reader.GetString()!;
-                reader.Read();
-
-                if (propertyName.Equals("tipUlaznice", StringComparison.OrdinalIgnoreCase))
-                {
-                    tipUlazniceStr = reader.GetString();
-                }
-                else
-                {
-                    properties.Add(propertyName, JsonElement.ParseValue(ref reader));
-                }
-            }
-        }
-
-        if (string.IsNullOrEmpty(tipUlazniceStr))
-            throw new JsonException("Polje 'tipUlaznice' je obavezno.");
+        string tipUlazniceStr = tipUlazniceNode.GetValue<string>();
 
         if (!Enum.TryParse<TipUlaznice>(tipUlazniceStr, true, out var tip))
             throw new JsonException($"Nepoznat tip ulaznice: {tipUlazniceStr}");
-
-        var jsonObject = JsonSerializer.Serialize(properties);
-
+        string jsonObject = node.ToJsonString();
         return tip switch
         {
             TipUlaznice.JEDNODNEVNA => JsonSerializer.Deserialize<JednodnevnaBasic>(jsonObject, options)!,

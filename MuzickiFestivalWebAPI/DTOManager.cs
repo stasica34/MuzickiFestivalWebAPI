@@ -153,7 +153,8 @@ namespace Muzicki_festival
                             Zanr = i.Zanr,
                             KONTAKT_OSOBA = i.Kontakt_osoba,
                             SVIRA_INSTRUMENT = (i as Solo_UmetnikBasic).Svira_instrument,
-                            TIP_INSTRUMENTA = (i as Solo_UmetnikBasic).Tip_instrumenta,
+                            TIP_INSTRUMENTA = ((i as Solo_UmetnikBasic).Svira_instrument == "NE") ? null
+                            : (i as Solo_UmetnikBasic).Tip_instrumenta,
                             MenadzerskaAgencija = ma,
                         };
 
@@ -402,32 +403,26 @@ namespace Muzicki_festival
                 return null;
             }
         }
-        public static bool ObrisiClana(ClanBendaBasic cb)
+        public static bool ObrisiClana(int clanId, int bendId)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
-                Bend bend = s.Get<Bend>(cb.Bend.Id);
-
+                Bend bend = s.Get<Bend>(bendId);
                 if (bend == null)
                     return false;
 
-                Clan c = s.Get<Clan>(cb.Id);
+                var clanZaBrisanje = bend.Clanovi.FirstOrDefault(c => c.ID == clanId);
+                if (clanZaBrisanje == null)
+                    return false;
 
-                bool ret = bend.Clanovi.Remove(c);
+                bool ret = bend.Clanovi.Remove(clanZaBrisanje);
                 if (ret)
                     bend.BROJ_CLANOVA -= 1;
 
                 s.Update(bend);
+                s.Delete(clanZaBrisanje);
                 s.Flush();
-
-                s.Update(c);
-                s.Flush();
-
-                s.Delete(c);
-                s.Flush();
-
-                s.Close();
 
                 return ret;
             }
@@ -874,6 +869,7 @@ namespace Muzicki_festival
                         ret = new OtvorenaLokacijaView(id, o.OPIS, o.NAZIV, o.GPS_KOORDINATE, o.MAX_KAPACITET);
                         break;
                     case TipLokacije.ZATVORENA:
+                        //ZatvorenaLokacijaBasic zatvorenaBasic = l as ZatvorenaLokacijaBasic;
                         ZatvorenaLokacija z = new ZatvorenaLokacija()
                         {
                             NAZIV = l.Naziv,
@@ -881,9 +877,15 @@ namespace Muzicki_festival
                             MAX_KAPACITET = l.Kapacitet,
                             OPIS = l.Opis,
                             TIP_LOKACIJE = TipLokacije.ZATVORENA,
-                            TIP_PROSTORA = (l as ZatvorenaLokacijaBasic).Tip_prostora,
-                            KLIMA = (l as ZatvorenaLokacijaBasic).Klima,
-                            DOSTUPNOST_SEDENJA = (l as ZatvorenaLokacijaBasic).Dostupnost_sedenja
+                            TIP_PROSTORA = l.Tip_prostora ?? "NIJE_UNET_TIP",
+                            KLIMA = l.Klima ?? "Ne",
+                            DOSTUPNOST_SEDENJA = l.Dostupnost_sedenja ?? "NEMA_SEDENJA"
+                            //TIP_PROSTORA = (l as ZatvorenaLokacijaBasic).Tip_prostora,
+                            //KLIMA = (l as ZatvorenaLokacijaBasic).Klima,
+                            //DOSTUPNOST_SEDENJA = (l as ZatvorenaLokacijaBasic).Dostupnost_sedenja
+                            //TIP_PROSTORA = zatvorenaBasic.Tip_prostora ?? "NIJE_UNET_TIP",
+                            //KLIMA = zatvorenaBasic.Klima ?? "Ne",
+                            //DOSTUPNOST_SEDENJA = zatvorenaBasic.Dostupnost_sedenja ?? "NEMA_SEDENJA" 
                         };
 
                         id = (int)s.Save(z);
@@ -897,9 +899,12 @@ namespace Muzicki_festival
                             MAX_KAPACITET = l.Kapacitet,
                             OPIS = l.Opis,
                             TIP_LOKACIJE = TipLokacije.KOMBINOVANA,
-                            TIP_PROSTORA = (l as KombinovanaLokacijaBasic).Tip_prostora,
-                            KLIMA = (l as KombinovanaLokacijaBasic).Klima,
-                            DOSTUPNOST_SEDENJA = (l as KombinovanaLokacijaBasic).Dostupnost_sedenja
+                            //    TIP_PROSTORA = (l as KombinovanaLokacijaBasic).Tip_prostora,
+                            //    KLIMA = (l as KombinovanaLokacijaBasic).Klima,
+                            //    DOSTUPNOST_SEDENJA = (l as KombinovanaLokacijaBasic).Dostupnost_sedenja
+                            TIP_PROSTORA = l.Tip_prostora ?? "NIJE_UNET_TIP",
+                            KLIMA = l.Klima ?? "Ne",
+                            DOSTUPNOST_SEDENJA = l.Dostupnost_sedenja ?? "NEMA_SEDENJA"
                         };
 
                         id = (int)s.Save(k);
@@ -1920,51 +1925,81 @@ namespace Muzicki_festival
                 switch (pb.Ulaznica.TipUlaznice)
                 {
                     case TipUlaznice.JEDNODNEVNA:
-                        u = new Jednodnevna
+                        if (pb.Ulaznica is JednodnevnaBasic jednodnevnaBasic)
                         {
-                            OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
-                            NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
-                            DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
-                            TIP_ULAZNICE = TipUlaznice.JEDNODNEVNA,
-                            Dogadjaj = d,
-                            DAN_VAZENJA = (pb.Ulaznica as JednodnevnaBasic).DatumVazenja
-                        };
+                            u = new Jednodnevna
+                            {
+                                OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
+                                NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
+                                DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
+                                TIP_ULAZNICE = TipUlaznice.JEDNODNEVNA,
+                                Dogadjaj = d,
+                                DAN_VAZENJA = (DateTime)jednodnevnaBasic.DatumVazenja
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("Poslat neispravan DTO za Jednodnevna ulaznicu.");
+                        }
                         break;
                     case TipUlaznice.VISEDNEVNA:
-                        var datumi = (pb.Ulaznica as ViseDnevnaBasic).DatumiVazenja;
-                        u = new Visednevna
+                        if (pb.Ulaznica is ViseDnevnaBasic viseDnevnaBasic)
                         {
-                            OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
-                            NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
-                            DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
-                            TIP_ULAZNICE = TipUlaznice.VISEDNEVNA,
-                            Dogadjaj = d,
-                            Dani = datumi,
-                            BROJ_DANA = datumi.Count
+                            var datumi = viseDnevnaBasic.DatumiVazenja;
 
-                        };
+                            if (datumi == null) throw new Exception("Lista datuma važenja ne sme biti prazna za višednevnu ulaznicu.");
+
+                            u = new Visednevna
+                            {
+                                OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
+                                NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
+                                DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
+                                TIP_ULAZNICE = TipUlaznice.VISEDNEVNA,
+                                Dogadjaj = d,
+                                Dani = datumi,
+                                BROJ_DANA = datumi.Count
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("Poslat neispravan DTO za Višednevna ulaznicu.");
+                        }
                         break;
                     case TipUlaznice.VIP:
-                        u = new Vip
+                        if (pb.Ulaznica is VIPBasic vipBasic)
                         {
-                            OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
-                            NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
-                            DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
-                            TIP_ULAZNICE = TipUlaznice.VIP,
-                            Dogadjaj = d,
-                            Pogodnosti = (pb.Ulaznica as VIPBasic).Pogodnosti,
-                        };
+                            u = new Vip
+                            {
+                                OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
+                                NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
+                                DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
+                                TIP_ULAZNICE = TipUlaznice.VIP,
+                                Dogadjaj = d,
+                                Pogodnosti = vipBasic.Pogodnosti
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("Poslat neispravan DTO za VIP ulaznicu.");
+                        }
                         break;
                     case TipUlaznice.AKREDITACIJA:
-                        u = new Akreditacija
+                        if (pb.Ulaznica is AkreditacijaBasic akreditacijaBasic)
                         {
-                            OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
-                            NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
-                            DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
-                            TIP_ULAZNICE = TipUlaznice.AKREDITACIJA,
-                            Dogadjaj = d,
-                            TIP = (pb.Ulaznica as AkreditacijaBasic).Tip
-                        };
+                            u = new Akreditacija
+                            {
+                                OSNOVNA_CENA = pb.Ulaznica.OsnovnaCena,
+                                NACIN_PLACANJA = pb.Ulaznica.NacinPlacanja,
+                                DATUM_KUPOVINE = pb.Ulaznica.DatumKupovine,
+                                TIP_ULAZNICE = TipUlaznice.AKREDITACIJA,
+                                Dogadjaj = d,
+                                TIP = akreditacijaBasic.Tip
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("Poslat neispravan DTO za Akreditacija ulaznicu.");
+                        }
                         break;
                     default:
                         throw new Exception("Nepravilna ulaznica!");
@@ -2760,7 +2795,7 @@ namespace Muzicki_festival
                         j.OSNOVNA_CENA = ub.OsnovnaCena;
                         j.NACIN_PLACANJA = ub.NacinPlacanja;
                         j.DATUM_KUPOVINE = ub.DatumKupovine;
-                        j.DAN_VAZENJA = (ub as JednodnevnaBasic).DatumVazenja;
+                        j.DAN_VAZENJA = (DateTime)(ub as JednodnevnaBasic).DatumVazenja;
 
                         s.Update(j);
                         break;

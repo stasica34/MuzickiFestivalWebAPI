@@ -214,15 +214,15 @@ namespace MuzickiFestivalWebAPI.Controllers
         [HttpDelete]
         [Route("ObrisiClana")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ObrisiClana([FromBody] ClanBendaBasic cb)
+        public IActionResult ObrisiClana(int clanId, int bendId)
         {
             try
             {
-                bool uspeh = DTOManager.ObrisiClana(cb);
+                bool uspeh = DTOManager.ObrisiClana(clanId, bendId);
                 if (uspeh)
-                    return Ok($"Uspešno ste obrisali člana benda sa ID: {cb.Id}.");
+                    return Ok($"Uspešno ste obrisali člana benda sa ID: {clanId}. iz benda {bendId}");
                 else
-                    return NotFound($"Član benda sa ID {cb.Id} nije pronađen.");
+                    return NotFound($"Član benda sa ID {bendId} nije pronađen.");
             }
             catch (Exception e)
             {

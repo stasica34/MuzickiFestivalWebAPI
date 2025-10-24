@@ -52,6 +52,7 @@ namespace Muzicki_festival.DTOs
         public int ID { get; set; }
         public TipKontakta TIP_KONTAKTA { get; set; }
         public string Vrednost {  get; set; }
+        public MenadzerskaAgencijaKontaktView() { }
         
         public MenadzerskaAgencijaKontaktView(int id, TipKontakta tip, string vrednost)
         {

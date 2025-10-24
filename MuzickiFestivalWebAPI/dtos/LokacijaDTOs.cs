@@ -79,8 +79,10 @@ namespace Muzicki_festival.DTOs
         public string Gps_koordinate { get; set; }
         public int Kapacitet { get; set; }
 
-        public TipLokacije TipLokacije { get; set; }    
-
+        public TipLokacije TipLokacije { get; set; }
+        public string? Tip_prostora { get; set; }
+        public string? Klima { get; set; }
+        public string? Dostupnost_sedenja { get; set; }
         // public IList<DogadjajView> Dogadjaji { get; set; }
 
         public LokacijaBasic(int id, string opis, string naziv, string gps_koordinate, int kapacitet, TipLokacije tipLokacije)
@@ -96,10 +98,12 @@ namespace Muzicki_festival.DTOs
 
     public class ZatvorenaLokacijaBasic : LokacijaBasic
     {
-        public string Tip_prostora { get; set; }
-        public string Klima { get; set; }
-        public string Dostupnost_sedenja { get; set; }
-
+        //public string? Tip_prostora { get; set; }
+        //public string? Klima { get; set; }
+        //public string? Dostupnost_sedenja { get; set; }
+        public ZatvorenaLokacijaBasic() : base(0, "", "", "", 0, TipLokacije.ZATVORENA)
+        {      
+        }
         public ZatvorenaLokacijaBasic(int id, string opis, string naziv, string gps_koordinate, int kapacitet, string tip_prostora, string klima, string dostupnost_sedenja)
             : base(id, opis, naziv, gps_koordinate, kapacitet, TipLokacije.ZATVORENA)
         {
@@ -119,9 +123,12 @@ namespace Muzicki_festival.DTOs
 
     public class KombinovanaLokacijaBasic : LokacijaBasic
     {
-        public string Tip_prostora { get; set; }
-        public string Klima { get; set; }
-        public string Dostupnost_sedenja { get; set; }
+        //public string? Tip_prostora { get; set; }
+        //public string? Klima { get; set; }
+        //public string? Dostupnost_sedenja { get; set; }
+        public KombinovanaLokacijaBasic() : base(0, "", "", "", 0, TipLokacije.KOMBINOVANA)
+        {
+        }
         public KombinovanaLokacijaBasic(int id, string opis, string naziv, string gps_koordinate, int kapacitet, string tip_prostora, string klima, string dostupnost_sedenja)
             : base(id, opis, naziv, gps_koordinate, kapacitet, TipLokacije.KOMBINOVANA)
         {

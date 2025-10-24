@@ -41,7 +41,7 @@ namespace Muzicki_festival.DTOs
         public DateTime DatumKraja { get; set;}
 
         public LokacijaBasic Lokacija { get; set;}
-        public IList<IzvodjacBasic> Izvodjaci { get; set;}
+        public IList<IzvodjacBasic>? Izvodjaci { get; set;}
 
         public DogadjajBasic() { }
         public DogadjajBasic(int id, string naziv, string tip, string opis, DateTime datumPocetka, DateTime datumKraja, LokacijaBasic lokacija, IList<IzvodjacBasic> izvodjaci)

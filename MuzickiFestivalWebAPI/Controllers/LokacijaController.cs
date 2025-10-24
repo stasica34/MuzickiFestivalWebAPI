@@ -45,6 +45,21 @@ namespace MuzickiFestivalWebAPI.Controllers
                 return BadRequest($"Greška prilikom preuzimanja lokacije: {e.Message}");
             }
         }
+        [HttpPost]
+        [Route("DodajLokaciju")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult DodajLokaciju([FromBody] LokacijaBasic l)
+        {
+            try
+            {
+                DTOManager.DodajLokaciju(l);
+                return Ok($"Uspešno ste dodali lokaciju: {l.Naziv}.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Neuspešno dodavanje lokacije: {e.Message}");
+            }
+        }
 
         [HttpPut]
         [Route("IzmeniLokaciju")]

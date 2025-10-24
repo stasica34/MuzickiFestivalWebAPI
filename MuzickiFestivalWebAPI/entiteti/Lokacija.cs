@@ -37,9 +37,9 @@ namespace Muzicki_festival.Entiteti
 
     public class ZatvorenaLokacija : Lokacija
     {
-        public virtual string TIP_PROSTORA { get; set; }
-        public virtual string KLIMA { get; set; }
-        public virtual string DOSTUPNOST_SEDENJA { get; set; }
+        public virtual string? TIP_PROSTORA { get; set; }
+        public virtual string? KLIMA { get; set; }
+        public virtual string? DOSTUPNOST_SEDENJA { get; set; }
 
         public ZatvorenaLokacija()
             : base()
@@ -59,9 +59,9 @@ namespace Muzicki_festival.Entiteti
 
     public class KombinovanaLokacija : Lokacija
     {
-        public virtual string TIP_PROSTORA { get; set; }
-        public virtual string KLIMA { get; set; }
-        public virtual string DOSTUPNOST_SEDENJA { get; set; }
+        public virtual string? TIP_PROSTORA { get; set; }
+        public virtual string? KLIMA { get; set; }
+        public virtual string? DOSTUPNOST_SEDENJA { get; set; }
 
         public KombinovanaLokacija()
             : base()
